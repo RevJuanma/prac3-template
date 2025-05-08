@@ -7,15 +7,18 @@ Una descripcion corta de su proyecto
 
 Cloná el repositorio y ejecutá los siguientes comandos:
 
-⁠```bash
-cd nombre-carpeta-del-proyecto
+```
+
+⁠cd nombre-carpeta-del-proyecto
 npm install
 npm run dev
+
 ```
 
 ## Estructura del proyecto
 
 ```
+
 ├──public/
 ├──src/
 │   ├── components/       # Componentes reutilizables
@@ -25,6 +28,7 @@ npm run dev
 │   ├── hooks/            # Hooks personalizados
 │   └── App.jsx           # Componente raíz
 └──README.md
+
 ```
 
 ## Tecnologías utilizadas
