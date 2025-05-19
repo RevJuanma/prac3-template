@@ -17,7 +17,7 @@ function PokeCard ({pokeUrl}) {
         <div className="pokeCard">
           <div className = "pokeCardSuperior">
             <label>{pokemon?.name.toUpperCase()} LV.10</label>
-            <label>HP <nav>{pokemon?.stats?.find((stat) => stat.stat.name === "hp")?.base_stat}</nav></label>
+            <label>HP <nav>{pokemon?.stats?.[0]?.base_stat}</nav></label>
           </div>
           <img className="pokeCardImg" src={pokemon?.sprites.front_default} alt={pokemon?.name}/>
           <div className="pokeCardInferior">

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useEffect } from 'react'
 import PokeCard from './assets/components/FRANCISCO-GALARZA/PokeCard'
+import PokeCard2 from './assets/components/FRANCISCO-GALARZA/PokeCard2'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -10,6 +11,10 @@ function App() {
   const [mostrar, setMostrar] = useState (false)
   return (
     <>
+    <div>
+      <PokeCard2 pokeUrl={'https://pokeapi.co/api/v2/pokemon/infernape'}/>
+    </div>
+    
     <input type="text" 
     placeholder="Escriba un nombre" 
     value={poke} 
