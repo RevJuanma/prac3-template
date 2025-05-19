@@ -1,42 +1,120 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; 
+  align-items: center;     
+  background: linear-gradient(to bottom right, #fff9c4, #ffe082);
+  font-family: 'Arial', sans-serif;
+  padding: 1rem;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.App {
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #fff4c4, #ffe57f); 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 2rem;
+  text-align: center; 
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+h1 {
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 2em;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.pachi-card {
+  width: 250px;
+  border: 2px solid #b5b73a;
+  border-radius: 12px;
+  background: linear-gradient(to bottom, #fff176, #fdd835);
+  padding: 20px;
+  box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-.card {
-  padding: 2em;
+.poke-image {
+  width: 80px;
+  height: 80px;
 }
 
-.read-the-docs {
-  color: #888;
+.move-desc {
+  font-style: italic;
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #b6b4a9cc;
+  border-radius: 5px;
 }
+
+.stats-list {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 0 0;
+}
+
+.logo-pokemon {
+  width: 300px;
+  height: auto;
+  display: block;
+  margin: 0px auto;
+}
+
+.search-box {
+  margin: 20px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.search-box input {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  width: 220px;
+}
+
+.search-box button {
+  padding: 10px 10px;
+  border: none;
+  border-radius: 8px;
+  background-color: #ffcb05;
+  color: #2a75bb;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.search-box button:hover {
+  background-color: #f0b800;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #d4af37dd; 
+  padding: 6px 12px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  font-weight: bold;
+  font-size: 1.1em;
+  color: #2a2a2a;
+}
+
+.poke-name {
+  text-align: left;
+}
+
+.poke-hp {
+  text-align: right;
+}
+.poke-id {
+  font-size: 0.9em;
+  color: #444;
+  margin: 8px 0;
+  font-weight: bold;
+}
+
