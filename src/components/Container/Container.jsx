@@ -2,10 +2,16 @@ import React from "react";
 
 const Container = ({ children }) => {
   return (
-    <div style={{ backgroundColor: "red", padding: 10 }}>
-      <input type="text" value={"123"}></input>
+    <div
+      style={{
+        backgroundColor: "lightblue",
+        color: "black",
+        padding: 12,
+        maxWidth: 200,
+        borderRadius: 10,
+      }}
+    >
       {children}
-      <input type="text" value={"123"}></input>
     </div>
   );
 };
