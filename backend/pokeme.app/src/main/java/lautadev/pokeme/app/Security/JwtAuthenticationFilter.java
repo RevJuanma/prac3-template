@@ -5,7 +5,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lautadev.pokeme.app.Exceptions.ApiException;
+import lautadev.pokeme.app.Exceptions.AccessDeniedException;
 import lautadev.pokeme.app.Services.authentication.TokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -61,14 +61,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             if (authHeaderValue == null || !authHeaderValue.startsWith(authPrefix)
                     || jwtBlacklistManager.isBlackListed(authHeaderValue)) {
-                throw new ApiException();
+                throw new AccessDeniedException();
             }
 
 
             final String token = authHeaderValue.substring(authPrefix.length());
 
             if(tokenService.isRefreshToken(token)){
-                throw new ApiException();
+                throw new AccessDeniedException();
             }
 
             final String userEmail = tokenService.extractUsername(token);
@@ -85,13 +85,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 } else {
-                    throw new ApiException();
+                    throw new AccessDeniedException();
                 }
             } else {
-                throw new ApiException();
+                throw new AccessDeniedException();
             }
             filterChain.doFilter(request, response);
-        } catch (ApiException | JwtException e) {
+        } catch (AccessDeniedException | JwtException e) {
             handlerExceptionResolver.resolveException(request, response, null, e);
         } catch (Exception e) {
             log.error("Error ", e);

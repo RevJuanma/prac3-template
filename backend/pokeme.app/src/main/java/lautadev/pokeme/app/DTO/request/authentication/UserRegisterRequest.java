@@ -5,6 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 import lautadev.pokeme.app.Utils.Password;
 
 public record UserRegisterRequest(@NotBlank String name,
-                                  @NotBlank @Email String email,
+                                  @NotBlank @Email(message = "Invalid email: ${validatedValue}")  String email,
                                   @Password String password) {
 }
