@@ -1,0 +1,21 @@
+
+.container{
+  display: flex;
+  justify-content:space-around;
+  align-items: center;
+  height: 64px;
+  width: 100%;
+  background: #ff0000;
+  background: linear-gradient(90deg, #ff0000 48%, #000000 50%, #ffffff 53%);
+  border-style: solid;
+  border-color:rgb(0, 0, 0);
+}
+
+.container a{
+  color: black;
+  text-decoration: none;
+}
+
+.container a:hover {
+  color:rgb(229, 206, 0);
+}
