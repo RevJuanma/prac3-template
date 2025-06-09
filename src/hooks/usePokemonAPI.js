@@ -1,38 +1,43 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 
-const API_BASE_URL = 'https://pokeapi.co/api/v2';
-
-export const usePokemon = (pokemonName) => {
-  const [data, setData] = useState(null);
+export const usePokemon = (input) => {
+  const [data, setData] = useState(null); 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!pokemonName) return;
+    if (!input) return;
 
-    const fetchPokemon = async () => {
+    const fetchPokemon = async (param) => {
+      const formatted = typeof param === 'string' ? param.toLowerCase() : param;
+      const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${formatted}`);
+      if (!res.ok) throw new Error(`Error al obtener Pokémon: ${param}`);
+      return await res.json();
+    };
+
+    const fetchData = async () => {
       setLoading(true);
       setError(null);
-      setData(null);
 
       try {
-        const response = await fetch(`${API_BASE_URL}/pokemon/${pokemonName.toLowerCase()}`);
+        let result;
 
-        if (!response.ok) {
-          throw new Error('Pokémon no encontrado');
+        if (Array.isArray(input)) {
+          result = await Promise.all(input.map(fetchPokemon));
+        } else {
+          result = await fetchPokemon(input);
         }
 
-        const json = await response.json();
-        setData(json);
+        setData(result);
       } catch (err) {
-        setError(err.message);
+        setError(err.message || 'Error al obtener Pokémon');
       } finally {
         setLoading(false);
       }
     };
 
-    fetchPokemon();
-  }, [pokemonName]);
+    fetchData();
+  }, [input]);
 
   return { data, loading, error };
 };

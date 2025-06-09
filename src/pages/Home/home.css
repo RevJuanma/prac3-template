@@ -1,0 +1,8 @@
+.pokecards-container {
+    display: flex;
+    justify-content: center;
+    align-items: left;
+    flex-wrap: wrap;
+    gap: 20px;
+    color: #ff0000;
+}

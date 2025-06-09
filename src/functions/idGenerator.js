@@ -1,8 +1,11 @@
-import { useState } from "react";
+export function getRandomPokemonIds(count = 5) {
+  const maxId = 1017;
+  const ids = new Set();
 
+  while (ids.size < count) {
+    const randomId = Math.floor(Math.random() * maxId) + 1;
+    ids.add(randomId);
+  }
 
-const MAX_POKEMON_ID = 1025;
-
-randomId=()=>{
-    Math.random(MAX_POKEMON_ID);
+  return Array.from(ids);
 }
