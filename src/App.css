@@ -40,3 +40,11 @@
 .read-the-docs {
   color: #888;
 }
+
+.pokemon-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px; /* separación entre cartas */
+  justify-content: center; /* opcional: centrar horizontalmente */
+  padding: 1rem;
+}

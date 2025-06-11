@@ -1,35 +1,20 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import "./App.css";
+import PokemonCard from "./components/Card/Card";
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  // Randomizar IDs de Pokémon
+  const pokemonIds = Array.from({ length: 151 }, (_, i) => i + 1)
+    .sort(() => Math.random() - 0.5)
+    .slice(0, 6);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div>
+      <h1>Sobre Premium de Pokémon</h1>
+      <div className="pokemon-row">
+        {pokemonIds.map((id) => (
+          <PokemonCard key={id} id={id} />
+        ))}
       </div>
-      <h1>Hola Juan, perdon por no hacer las tareas tkm</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </div>
+  );
 }
-
-export default App
