@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import PokemonBooster from "../Booster/Booster"
+import PokemonBooster from "../Booster/Booster";
 
 export default function BoosterSelector() {
-  const [type, setType] = useState("basic");
+  const [type, setType] = useState(null); 
 
   const handleSelect = (selectedType) => {
-    setType(selectedType);
+    setType(selectedType); 
   };
 
   return (
@@ -26,10 +26,12 @@ export default function BoosterSelector() {
         </button>
       </div>
 
-      <PokemonBooster
-        name={type}
-        count={type === "basic" ? 5 : 6}
-      />
+      {type && (
+        <PokemonBooster
+          name={type}
+          count={type === "basic" ? 5 : 6}
+        />
+      )}
     </div>
   );
 }
