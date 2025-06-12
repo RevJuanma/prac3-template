@@ -1,39 +1,49 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { usePokemon } from "../../hooks/UsePokemon";
+import "./Card.css";           
+const typeColors = {
+  normal: "#A8A77A",
+  fire: "#EE8130",
+  water: "#6390F0",
+  electric: "#F7D02C",
+  grass: "#7AC74C",
+  ice: "#96D9D6",
+  fighting: "#C22E28",
+  poison: "#A33EA1",
+  ground: "#E2BF65",
+  flying: "#A98FF3",
+  psychic: "#F95587",
+  bug: "#A6B91A",
+  rock: "#B6A136",
+  ghost: "#735797",
+  dragon: "#6F35FC",
+  dark: "#705746",
+  steel: "#B7B7CE",
+  fairy: "#D685AD",
+};
 
 export default function PokemonCard({ id }) {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    if (!id) return;
-    setLoading(true);
-    setError(null);
-    fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
-      .then((res) => {
-        if (!res.ok) throw new Error("Pokémon no encontrado");
-        return res.json();
-      })
-      .then((json) => setData(json))
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
-  }, [id]);
+  const { data, loading, error } = usePokemon(id);
 
   if (loading) return <p>Cargando...</p>;
-  if (error) return <p style={{ color: "red" }}>{error}</p>;
+  if (error) return <p className="pokemon-card__error">{error}</p>;
   if (!data) return null;
 
+  const type1 = data.types[0].type.name;
+const type2 = data.types[1]?.type.name;
+
+const color1 = typeColors[type1] || "#FFF";
+const color2 = type2 ? typeColors[type2] || "#FFF" : null;
+
+const backgroundStyle = {
+  background: color2
+    ? `linear-gradient(135deg, ${color1}, ${color2})`
+    : color1,
+};
+
   return (
-    <div
-      style={{
-        border: "1px solid #ccc",
-        borderRadius: "8px",
-        padding: "1rem",
-        maxWidth: "300px",
-        background: "#fff",
-      }}
-    >
-      <h2 style={{ textTransform: "capitalize" }}>{data.name}</h2>
+    <div className="pokemon-card" style={backgroundStyle}>
+      <h2 className="pokemon-card__name">{data.name}</h2>
       <p>
         <strong>N°:</strong> {data.id}
       </p>
@@ -48,17 +58,10 @@ export default function PokemonCard({ id }) {
       </p>
       <div>
         <strong>Estadísticas:</strong>
-        <ul style={{ listStyle: "none", padding: 0, margin: "0.5rem 0 0 0" }}>
+        <ul className="pokemon-card__stats">
           {data.stats.map((s) => (
-            <li
-              key={s.stat.name}
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                marginBottom: "0.25rem",
-              }}
-            >
-              <span style={{ textTransform: "capitalize" }}>
+            <li key={s.stat.name} className="pokemon-card__stat">
+              <span className="pokemon-card__stat-name">
                 {s.stat.name.replace("-", " ")}:
               </span>
               <span>{s.base_stat}</span>

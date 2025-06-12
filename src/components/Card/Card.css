@@ -1,0 +1,11 @@
+.pokemon-card {
+  border: 4px solid gold;
+  border-radius: 4px;
+  padding: 1rem;
+  max-width: 300px;
+  color: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+.pokemon-card {
+  width: 250px; /* o el tamaño que quieras */
+}
