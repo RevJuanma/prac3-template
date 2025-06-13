@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import PokemonBooster from "../Booster/Booster";
+import PokemonBooster from "../booster/Booster";
 
 export default function BoosterSelector() {
   const [type, setType] = useState(null); 
