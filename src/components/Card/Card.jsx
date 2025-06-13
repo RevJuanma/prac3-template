@@ -9,7 +9,7 @@ import { useDeck } from "../../context/DeckContext";
 
 export default function PokemonCard({ id, actions = [] }) {
   const { data, loading, error } = usePokemon(id);
-  const { isFavorite, toggleFavorite } = useFavorites();
+  const { isFavorite, toggleFavorite, isFilledFavorites } = useFavorites();
   const [open, setOpen] = useState(false);
   const hasActions = actions.length > 0;
   const { isInDeck } = useDeck();
@@ -35,7 +35,13 @@ export default function PokemonCard({ id, actions = [] }) {
       {/* Icono de Favoritos */}
       {isInDeck(id) && (
         <button
-          onClick={() => toggleFavorite(id)}
+          onClick={() => {
+            if (isFilledFavorites() && !isFavorite(id)) {
+              alert("Tus favoritos alcanzó el límite máximo");
+            } else{
+              toggleFavorite(id)};
+            }
+          }
           aria-label={
             isFavorite(id) ? "Quitar de favoritos" : "Añadir a favoritos"
           }

@@ -24,8 +24,13 @@ export function DeckProvider({ children }) {
       }
     });
 
+  const isFilled = () => {
+    const nonFavCount = deck.filter((x) => !favs.includes(x)).length;
+    return nonFavCount === 50;
+  }
+
   return (
-    <DeckContext.Provider value={{ deck, toggleDeck, isInDeck }}>
+    <DeckContext.Provider value={{ deck, toggleDeck, isInDeck, isFilled }}>
       {children}
     </DeckContext.Provider>
   );

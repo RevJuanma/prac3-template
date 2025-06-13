@@ -14,8 +14,13 @@ export function FavoritesProvider({ children }) {
         return curr;
       }
     });
+
+  const isFilledFavorites = () => {
+    return favs.length === 10;
+  }
+
   return (
-    <FavoritesContext.Provider value={{ favs, toggleFavorite, isFavorite }}>
+    <FavoritesContext.Provider value={{ favs, toggleFavorite, isFavorite, isFilledFavorites }}>
       {children}
     </FavoritesContext.Provider>
   );

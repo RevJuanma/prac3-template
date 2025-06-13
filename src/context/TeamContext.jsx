@@ -13,7 +13,6 @@ export function TeamProvider({ children }) {
       } else {
         if (curr.length >= 6) {
           // Límite alcanzado
-          console.warn("No se puede agregar: límite de 6 cartas alcanzado");
           return curr;
         }
         // Agregar a equipo
@@ -24,8 +23,12 @@ export function TeamProvider({ children }) {
 
   const isInTeam = (id) => team.includes(id);
 
+  const isFilledTeams = () => {
+    return team.length === 6;
+  }
+
   return (
-    <TeamContext.Provider value={{ team, toggleTeam, isInTeam }}>
+    <TeamContext.Provider value={{ team, toggleTeam, isInTeam, isFilledTeams }}>
       {children}
     </TeamContext.Provider>
   );
