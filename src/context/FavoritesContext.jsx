@@ -3,11 +3,17 @@ import React, { useContext, useState } from "react";
 export const FavoritesContext = React.createContext();
 export function FavoritesProvider({ children }) {
   const [favs, setFavs] = useState([]);
-  const toggleFavorite = (id) =>
-    setFavs((curr) =>
-      curr.includes(id) ? curr.filter((x) => x !== id) : [...curr, id]
-    );
   const isFavorite = (id) => favs.includes(id);
+  const toggleFavorite = (id) =>
+    setFavs((curr) => {
+      if (isFavorite(id)) {
+        return curr.filter((x) => x !== id);
+      } else if (curr.length < 10) {
+        return [...curr, id];
+      } else {
+        return curr;
+      }
+    });
   return (
     <FavoritesContext.Provider value={{ favs, toggleFavorite, isFavorite }}>
       {children}
