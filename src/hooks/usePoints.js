@@ -1,27 +1,27 @@
 import useLocalStorage from "./useLocalStorage";
 
-const usePuntos = () => {
-  const [puntos, setPuntos] = useLocalStorage("puntos", 0);
+const usePoints = () => {
+  const [points, setPoints] = useLocalStorage("Puntos", 0);
 
-  const sumarPuntos = (cantidad) => {
-    setPuntos((prev) => prev + cantidad);
+  const sumarPoints = (cantidad) => {
+    setPoints((prev) => prev + cantidad);
   };
 
-  const restarPuntos = (cantidad) => {
-    setPuntos((prev) => Math.max(0, prev - cantidad));
+  const restarPoints = (cantidad) => {
+    setPoints((prev) => Math.max(0, prev - cantidad));
   };
 
-  const resetearPuntos = () => {
-    setPuntos(0);
+  const resetearPoints = () => {
+    setPoints(0);
   };
 
   return {
-    puntos,
-    setPuntos,
-    sumarPuntos,
-    restarPuntos,
-    resetearPuntos,
+    points,
+    setPoints,
+    sumarPoints,
+    restarPoints,
+    resetearPoints,
   };
 };
 
-export default usePuntos;
+export default usePoints;
