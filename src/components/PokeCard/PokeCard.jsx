@@ -6,10 +6,17 @@ import useLocalStorage from "../../hooks/useLocalStorage";
 const PokeCard = ({ id }) => {
   const { data, loading, error } = usePokemon(id);
   const [collection, setCollection] = useLocalStorage("misPokemons", []);
+  const [fovorites,setFavorites]= useLocalStorage("misFavoritos",[])
 
   const agregarPokemon = (pokemonId) => {
     if (!collection.includes(pokemonId)) {
       setCollection([...collection, pokemonId]);
+    }
+  };
+
+    const agregarFavorito = (pokemonId) => {
+    if (collection.includes(pokemonId)) {
+      setFavorites([...fovorites, pokemonId]);
     }
   };
 
@@ -26,14 +33,18 @@ const PokeCard = ({ id }) => {
           <p>Altura: {pokemon.height}</p>
           <p>Peso: {pokemon.weight}</p>
           <p>Tipo(s): {pokemon.types.map((t) => t.type.name).join(", ")}</p>
-          <button
+          
+          {!collection.includes(pokemon.id) && <button 
             onClick={() => agregarPokemon(pokemon.id)}
             disabled={collection.includes(pokemon.id)}
           >
-            {collection.includes(pokemon.id)
-              ? "Ya en tu coleccion"
-              : "Agregar a la coleccion"}
-          </button>
+            Agregar a la coleccion
+          </button>}
+                    {collection.includes(pokemon.id) && <button 
+            onClick={() => agregarFavorito(pokemon.id)}
+          >
+            Agregar a Favoritos
+          </button>}
         </div>
       ))}
     </>

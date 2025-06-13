@@ -9,7 +9,7 @@ const Layout = () => {
       <a href="/">Inicio</a>
       <a href="/favorites">Favoritos</a>
       <a href="/open-pack">Abrir Sobres</a>
-      <a href="/teams">Equipo</a>
+      <a href="/team">Equipo</a>
     </div>
     <Outlet/>
     </>

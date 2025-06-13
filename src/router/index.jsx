@@ -13,7 +13,7 @@ export const router = createBrowserRouter([
       },
       { path: "favorites", element: <FavoritesScreen /> },
       { path: "open-pack", element: <OpenPacksScreen /> },
-      { path: "teams", element: <TeamScreen /> },
+      { path: "team", element: <TeamScreen /> },
       {path:"pruebas",element:<PokemonViewer/>}
     ],
   },
