@@ -27,6 +27,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 
 @Service
@@ -118,7 +119,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .name(userRegisterRequest.name())
                 .password(encodedPassword)
                 .email(userRegisterRequest.email())
-                .points(100)
+                .balance(BigDecimal.valueOf(100))
                 .roles(Collections.singleton(Role.USER))
                 .inventory(inventory)
                 .deck(deck)

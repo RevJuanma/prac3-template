@@ -3,6 +3,8 @@ package lautadev.pokeme.app.Entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 
 @Entity
 @Getter
@@ -17,6 +19,8 @@ public class CardPokemon {
     private Long idCustom;
     @Column(nullable = false)
     private Long idPokemon;
+    @Column(nullable = false, precision = 38, scale = 16)
+    private BigDecimal value;
     private String rename;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "inventory_id")

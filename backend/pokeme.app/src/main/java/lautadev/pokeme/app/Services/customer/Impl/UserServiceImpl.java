@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         return new UserDetails(
                 user.getName(),
                 user.getEmail(),
-                user.getPoints()
+                user.getBalance()
         );
     }
 
