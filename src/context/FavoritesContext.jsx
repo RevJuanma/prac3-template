@@ -3,6 +3,7 @@ import React, { useContext, useState } from "react";
 export const FavoritesContext = React.createContext();
 export function FavoritesProvider({ children }) {
   const [favs, setFavs] = useState([]);
+  const [customNames, setCustomNames] = useState({});
   const isFavorite = (id) => favs.includes(id);
   const toggleFavorite = (id) =>
     setFavs((curr) => {
@@ -14,13 +15,19 @@ export function FavoritesProvider({ children }) {
         return curr;
       }
     });
-
+  const setCustomName = (id, name) => {
+    setCustomNames((curr) => ({
+      ...curr,
+      [id]: name,
+    }));
+  };
   const isFilledFavorites = () => {
     return favs.length === 10;
   }
-
   return (
-    <FavoritesContext.Provider value={{ favs, toggleFavorite, isFavorite, isFilledFavorites }}>
+    <FavoritesContext.Provider
+      value={{ favs, toggleFavorite, isFavorite, setCustomName, customNames, isFilledFavorites }}
+    >
       {children}
     </FavoritesContext.Provider>
   );

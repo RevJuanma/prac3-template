@@ -6,10 +6,12 @@ import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { FaEllipsisV } from "react-icons/fa";
 import React, { useState } from "react";
 import { useDeck } from "../../context/DeckContext";
+import { LIMITE_FAVORITOS,AÑADIO_FAVORITOS,QUITAR_FAVORITOS } from "../../constans/alerts";
+import { toast } from "react-toastify";
 
 export default function PokemonCard({ id, actions = [] }) {
   const { data, loading, error } = usePokemon(id);
-  const { isFavorite, toggleFavorite, isFilledFavorites } = useFavorites();
+  const { isFavorite, toggleFavorite, isFilledFavorites, setCustomName, customNames } = useFavorites();
   const [open, setOpen] = useState(false);
   const hasActions = actions.length > 0;
   const { isInDeck } = useDeck();
@@ -37,8 +39,10 @@ export default function PokemonCard({ id, actions = [] }) {
         <button
           onClick={() => {
             if (isFilledFavorites() && !isFavorite(id)) {
-              alert("Tus favoritos alcanzó el límite máximo");
+              toast.warn (LIMITE_FAVORITOS);
             } else{
+              setCustomName(id, undefined);
+              isFavorite(id) ? toast.info(QUITAR_FAVORITOS) : toast.success(AÑADIO_FAVORITOS); // Importa las etiquetas aca
               toggleFavorite(id)};
             }
           }
@@ -111,7 +115,7 @@ export default function PokemonCard({ id, actions = [] }) {
         </ul>
       )}
 
-      <h2 className="pokemon-card__name">{data.name}</h2>
+      <h2 className="pokemon-card__name">{customNames[id] || data.name}</h2>
       <p>
         <strong>N°:</strong> {data.id}
       </p>

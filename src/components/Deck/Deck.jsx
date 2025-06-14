@@ -4,6 +4,8 @@ import PokemonCard from "../Card/Card";
 import { FaMinus, FaPlus } from "react-icons/fa";
 import { useTeam } from "../../context/TeamContext";
 import { useFavorites } from "../../context/FavoritesContext";
+import { POKEMON_EN_EQUIPO_NO_PUEDE_ELIMINARSE_DEL_MAZO, POKEMON_EN_FAVORITOS_NO_PUEDE_ELIMINARSE_DEL_MAZO, LIMITE_EQUIPO, AÑADIO_EQUIPO, QUITAR_EQUIPO } from "../../constans/alerts"
+import { toast } from "react-toastify";
 
 export default function Deck() {
   const { toggleDeck, deck } = useDeck();
@@ -25,9 +27,9 @@ export default function Deck() {
             icon: <FaMinus />,
             onClick: () => {
               if (isFavorite(id)) {
-                alert("Este Pokémon está en favoritos y no puede quitarse del mazo");
+                toast.warn (POKEMON_EN_FAVORITOS_NO_PUEDE_ELIMINARSE_DEL_MAZO);
               } else if (isInTeam(id)) {
-                alert("Este Pokémon está en tu equipo y no puede quitarse del mazo");
+                toast.warn (POKEMON_EN_EQUIPO_NO_PUEDE_ELIMINARSE_DEL_MAZO);
               } else {
                 toggleDeck(id);
               }
@@ -42,8 +44,9 @@ export default function Deck() {
             icon: inTeam ? <FaMinus /> : <FaPlus />,
             onClick: () => {
               if (isFilledTeams() && !isInTeam(id)) {
-                alert("Tu equipo alcanzó el límite máximo");
+                toast.warn (LIMITE_EQUIPO);
               } else {
+                inTeam ? toast.info(QUITAR_EQUIPO) : toast.success(AÑADIO_EQUIPO);
                 toggleTeam(id);
               }
             },
