@@ -11,6 +11,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { TeamProvider } from "./context/TeamContext";
 import { PointsProvider } from "./context/PointsContext";
 import { PointsDisplay } from "./components/PointsDisplay/PointsDisplay"
+import MyTeam from "./components/MyTeam/MyTeam";
 
 export default function App() {
   return (
@@ -41,7 +42,7 @@ export default function App() {
                 <Routes>
                   <Route path="/" element={<Deck />} />
                   <Route path="/abrir-sobre" element={<BoosterSelector />} />
-                  <Route path="/mi-equipo" element={<Deck />} />
+                  <Route path="/mi-equipo" element={<MyTeam />} />
                   <Route path="/favoritos" element={<Favorites />} />
                 </Routes>
               </BrowserRouter>

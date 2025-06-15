@@ -1,14 +1,12 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext } from "react";
+import useLocalStorage from "../hooks/UseLocalStorage";
 
 const PointsContext = createContext();
-
 export function PointsProvider({ children }) {
-  const [points, setPoints] = useState(10); // valor inicial
+  const [points, setPoints] = useLocalStorage("points", 100);
 
-  const incrementPoints = (amount = 1) => setPoints(prev => prev + amount);
-  const decrecePoints = (amount = 1) => {
-    if (points >= amount) setPoints(prev => prev - amount);
-  };
+  const incrementPoints = (amt = 1) => setPoints((p) => p + amt);
+  const decrecePoints = (amt = 1) => setPoints((p) => (p >= amt ? p - amt : p));
 
   return (
     <PointsContext.Provider value={{ points, incrementPoints, decrecePoints }}>
@@ -16,7 +14,8 @@ export function PointsProvider({ children }) {
     </PointsContext.Provider>
   );
 }
-
 export function usePoints() {
-  return useContext(PointsContext);
+  const ctx = useContext(PointsContext);
+  if (!ctx) throw new Error("usePoints debe usarse dentro de PointsProvider");
+  return ctx;
 }
