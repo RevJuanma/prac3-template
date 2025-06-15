@@ -4,13 +4,15 @@ import PokemonCard from "../Card/Card";
 import { FaMinus, FaPlus } from "react-icons/fa";
 import { useTeam } from "../../context/TeamContext";
 import { useFavorites } from "../../context/FavoritesContext";
-import { POKEMON_EN_EQUIPO_NO_PUEDE_ELIMINARSE_DEL_MAZO, POKEMON_EN_FAVORITOS_NO_PUEDE_ELIMINARSE_DEL_MAZO, LIMITE_EQUIPO, AÑADIO_EQUIPO, QUITAR_EQUIPO } from "../../constans/alerts"
+import { POKEMON_EN_EQUIPO_NO_PUEDE_ELIMINARSE_DEL_MAZO, POKEMON_EN_FAVORITOS_NO_PUEDE_ELIMINARSE_DEL_MAZO, LIMITE_EQUIPO, AÑADIO_EQUIPO, QUITAR_EQUIPO, AÑADIO_PUNTOS } from "../../constans/alerts"
 import { toast } from "react-toastify";
+import { usePoints } from "../../context/PointsContext";
 
 export default function Deck() {
   const { toggleDeck, deck } = useDeck();
   const { toggleTeam, isInTeam, isFilledTeams } = useTeam();
   const { isFavorite } = useFavorites();
+  const { incrementPoints } = usePoints();
 
   if (deck.length === 0) {
     return <p>No tienes Pokémon en tu mazo</p>;
@@ -32,6 +34,8 @@ export default function Deck() {
                 toast.warn (POKEMON_EN_EQUIPO_NO_PUEDE_ELIMINARSE_DEL_MAZO);
               } else {
                 toggleDeck(id);
+                toast.info(AÑADIO_PUNTOS)
+                incrementPoints(1);
               }
             },
           };

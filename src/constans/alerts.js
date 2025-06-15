@@ -8,3 +8,4 @@ export const AÑADIO_EQUIPO = "Este Pokémon se añadio al equipo";
 export const AÑADIO_FAVORITOS = "Este Pokémon se añadio a favoritos";
 export const QUITAR_EQUIPO = "Este Pokémon se quito del equipo";
 export const QUITAR_FAVORITOS = "Este Pokémon se quito de favoritos";
+export const AÑADIO_PUNTOS = "Se añadió 1 punto por esta carta"

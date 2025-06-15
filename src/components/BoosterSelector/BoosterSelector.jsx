@@ -1,17 +1,29 @@
 import React, { useState } from "react";
 import PokemonBooster from "../Booster/Booster";
+import { usePoints } from "../../context/PointsContext";
+import { toast } from "react-toastify";
+
 
 export default function BoosterSelector() {
   const [type, setType] = useState("basic");
   const [opened, setOpened] = useState(false);
   const [boosterKey, setBoosterKey] = useState(0);
+  const { points, decrecePoints } = usePoints();
 
-  const handleSelectType = (selectedType) => {
-    setType(selectedType);
-    // Abrir un sobre nuevo inmediatamente
-    setOpened(true);
-    setBoosterKey((prev) => prev + 1);
-  };
+ const handleSelectType = (selectedType) => {
+  const cost = selectedType === "basic" ? 1 : 2;
+
+  if (points < cost) {
+    toast.error("No tiene puntos para abrir el sobre seleccionado");
+    return;
+  }
+
+  decrecePoints(cost);
+  toast.success(`Sobre ${selectedType} abierto`);
+  setType(selectedType);
+  setOpened(true);
+  setBoosterKey((prev) => prev + 1);
+};
 
   const openNewBooster = () => {
     setOpened(true);

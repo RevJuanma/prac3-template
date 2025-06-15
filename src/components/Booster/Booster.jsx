@@ -7,9 +7,10 @@ import {
   LIMITE_DE_MAZO,
   POKEMON_EN_FAVORITOS_NO_PUEDE_ELIMINARSE_DEL_MAZO,
   POKEMON_EN_EQUIPO_NO_PUEDE_ELIMINARSE_DEL_MAZO,
-  SELECT_POKEMON_REQUIRED
+  SELECT_POKEMON_REQUIRED, AÑADIO_PUNTOS
 } from "../../constans/alerts";
 import { FaPlus } from "react-icons/fa";
+import { usePoints } from "../../context/PointsContext";
 
 export default function PokemonBooster({
   name,
@@ -21,6 +22,7 @@ export default function PokemonBooster({
   const { isFavorite } = useFavorites();
   const [selected, setSelected] = useState([]);
   const [maxSelectionReached, setMaxSelectionReached] = useState(false);
+  const { incrementPoints } = usePoints();
 
   // IDs aleatorios de Pokémon
   const pokemonIds = useMemo(() => {
@@ -60,6 +62,8 @@ export default function PokemonBooster({
         toast.warn(POKEMON_EN_FAVORITOS_NO_PUEDE_ELIMINARSE_DEL_MAZO);
       } else if (isFilled() && !isInDeck(id)) {
         toast.warn(LIMITE_DE_MAZO);
+        toast.info(AÑADIO_PUNTOS);
+        incrementPoints(1);
       } else {
         toast.success(`¡Pokémon #${id} agregado al mazo!`);
         toggleDeck(id);

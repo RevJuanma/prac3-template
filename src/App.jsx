@@ -9,6 +9,8 @@ import Deck from "./components/Deck/Deck";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { TeamProvider } from "./context/TeamContext";
+import { PointsProvider } from "./context/PointsContext";
+import { PointsDisplay } from "./components/PointsDisplay/PointsDisplay"
 
 export default function App() {
   return (
@@ -22,29 +24,31 @@ export default function App() {
         closeOnClick
         pauseOnHover
       />
-
-      <FavoritesProvider>
-        <TeamProvider>
-          <DeckProvider>
-            <BrowserRouter>
-              <nav>
-                <NavLink to="/" end>
-                  Inicio
-                </NavLink>{" "}
-                |<NavLink to="/abrir-sobre">Abrir Sobre</NavLink> |
-                <NavLink to="/mi-equipo">Mi Equipo</NavLink> |
-                <NavLink to="/favoritos">Favoritos</NavLink>
-              </nav>
-              <Routes>
-                <Route path="/" element={<Deck />} />
-                <Route path="/abrir-sobre" element={<BoosterSelector />} />
-                <Route path="/mi-equipo" element={<Deck />} />
-                <Route path="/favoritos" element={<Favorites />} />
-              </Routes>
-            </BrowserRouter>
-          </DeckProvider>
-        </TeamProvider>
-      </FavoritesProvider>
+      <PointsProvider>
+        <PointsDisplay/>
+        <FavoritesProvider>
+          <TeamProvider>
+            <DeckProvider>
+              <BrowserRouter>
+                <nav>
+                  <NavLink to="/" end>
+                    Inicio
+                  </NavLink>{" "}
+                  | <NavLink to="/abrir-sobre">Abrir Sobre</NavLink> |
+                  <NavLink to="/mi-equipo">Mi Equipo</NavLink> |
+                  <NavLink to="/favoritos">Favoritos</NavLink>
+                </nav>
+                <Routes>
+                  <Route path="/" element={<Deck />} />
+                  <Route path="/abrir-sobre" element={<BoosterSelector />} />
+                  <Route path="/mi-equipo" element={<Deck />} />
+                  <Route path="/favoritos" element={<Favorites />} />
+                </Routes>
+              </BrowserRouter>
+            </DeckProvider>
+          </TeamProvider>
+        </FavoritesProvider>
+      </PointsProvider>
     </React.Fragment>
   );
 }
