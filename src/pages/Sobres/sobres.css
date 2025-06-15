@@ -1,0 +1,44 @@
+
+.title{
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+    margin-bottom: 20px;
+    justify-content: center;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;  
+}
+
+.forms{
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+    justify-content: center;
+    gap: 100px;
+}
+
+.sobre1 h3, .sobre2 h3{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;  
+}
+
+.sobre1, .sobre2{
+    background-color: lightgray; 
+    padding: 50px;
+    padding-top: 10px;
+    padding-bottom: 20px;
+    border-radius: 10px;
+}
+
+.sobre1 button, .sobre2 button{
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+    justify-content: center;
+    color: #fff;
+    background-color: #f23;
+    font-size: large;
+    border-radius: 10px;
+    padding: 5px;
+    width: 70px;
+    border: none;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}

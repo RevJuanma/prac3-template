@@ -1,19 +1,26 @@
-import { useState } from 'react'
-import { useEffect } from 'react'
-import PokeCardFranciscoGalarza from './assets/components/PokeCard-FranciscoGalarza'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from "react";
+import { useState, useEffect } from "react";
+import { Outlet } from "react-router";
+import { Link } from "react-router";
+import pokeTitle from "./assets/pokeTitle.svg";
+import './App.css';
+
 
 function App() {
-
-  return (
-    <>
-    <div>
-      <PokeCardFranciscoGalarza pokeUrl={'https://pokeapi.co/api/v2/pokemon/infernape'}/>
-    </div>
-    </>
-  );
+    return (
+        <>
+        <div className="inicio">
+            <div className="titulo">
+                <img src={pokeTitle} alt="titulo" />
+            </div>
+            <Link to ="auth/Home" className="btnPlay">
+            <h1>JUGAR</h1>
+            </Link>
+        </div>
+        </>
+    );
 }
 
-export default App
+
+
+export default App;

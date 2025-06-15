@@ -1,0 +1,57 @@
+.pokeCard{
+    border:5px solid lightgray;
+    border-Radius:12px; 
+    padding:10px;
+    width:250px;
+    font:caption;
+}
+
+.pokeCard:hover{
+    transform: scale(0.95);
+}
+
+.pokeCardNombre{
+    text-Align:center;
+    text-Transform:capitalize;
+}
+
+.pokeCardImg{
+    display: block;
+    margin: auto;
+}
+
+.pokeCardTipos{
+    display: flex;
+    justify-content: center;
+    list-Style:none;
+    text-Transform:uppercase;
+    font-Weight:bold;
+    gap: 10px;
+}
+
+.pokeCardStats{
+    text-Transform:uppercase;
+    font-weight: bold;
+}
+
+.renombrar{
+    background-Color:purple;
+    color:white;
+    padding:5px;
+    border:none;
+    border-Radius:15px;
+    font-Size:15px;
+    font-Weight:bold;
+    font-Family:sans-serif;
+}
+
+.borrarNombre{
+    background-Color:red;
+    color:white;
+    padding:5px;
+    border:none;
+    border-Radius:15px;
+    font-Size:15px;
+    font-Weight:bold;
+    font-Family:'sans-serif';
+}
