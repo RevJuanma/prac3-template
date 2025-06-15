@@ -3,6 +3,7 @@ import "./pokeCard.css";
 import { usePokemon } from "../../hooks/usePokemonAPI";
 import useMyPokemons from "../../hooks/useMyPokemons";
 import useMyFavorites from "../../hooks/useMyfavorites";
+import useMyTeam from "../../hooks/useMyTeam";
 import usePoints from "../../hooks/usePoints";
 import {useHasReachedCollectionLimit, useHasReachedFavoritesLimit} from "../../hooks/useLimits"
 
@@ -13,6 +14,7 @@ const PokeCard = ({ id }) => {
   const { data, loading, error } = usePokemon(id);
   const { collection, agregarPokemon, eliminarPokemon } = useMyPokemons();
   const { favorites, agregarFavorito, eliminarFavorito } = useMyFavorites();
+  const { team, agregarAlEquipo, eliminarDelEquipo }=useMyTeam()
 
   if (loading) return <p>Cargando...</p>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;
@@ -28,7 +30,7 @@ const PokeCard = ({ id }) => {
           <p>Peso: {pokemon.weight}</p>
           <p>Tipo(s): {pokemon.types.map((t) => t.type.name).join(", ")}</p>
 
-          {!collection.includes(pokemon.id) && !stateCollection && (
+          {!collection.includes(pokemon.id) && !team.includes(pokemon.id) && !stateCollection && (
             <button onClick={() => {agregarPokemon(pokemon.id); eliminarFavorito(pokemon.id);window.location.reload()}}>
               Agregar a la colección
             </button>
@@ -40,11 +42,21 @@ const PokeCard = ({ id }) => {
             </button>
           )}
 
+          {(collection.includes(pokemon.id) || favorites.includes(pokemon.id)) && !team.includes(pokemon.id)&&(
+            <button onClick={()=>{ agregarAlEquipo(pokemon.id)}}>
+              Agregar al Equipo
+            </button>
+          )}
+
+          {team.includes(pokemon.id) &&(
+            <button onClick={()=>{ eliminarDelEquipo(pokemon.id)}}>
+              Quitar del Equipo
+            </button>
+          )}
+
           {collection.includes(pokemon.id) && !favorites.includes(pokemon.id) && (
             <button onClick={()=>{eliminarPokemon(pokemon.id);sumarPoints(1);window.location.reload()}}>Liberar por Puntos</button>
-          )
-
-          }
+          )}
         </div>
       ))}
     </>
