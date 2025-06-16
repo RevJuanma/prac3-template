@@ -1,5 +1,6 @@
 import React, { createContext, useContext } from "react";
 import useLocalStorage from "../hooks/UseLocalStorage";
+export const MAX_TEAM_SIZE = 6;
 
 export const TeamContext = createContext();
 export function TeamProvider({ children }) {

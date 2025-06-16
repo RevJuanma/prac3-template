@@ -12,6 +12,7 @@ import { TeamProvider } from "./context/TeamContext";
 import { PointsProvider } from "./context/PointsContext";
 import { PointsDisplay } from "./components/PointsDisplay/PointsDisplay"
 import MyTeam from "./components/MyTeam/MyTeam";
+import CountPokemonDisplay from "./components/CountPokemonDisplay/CountPokemonDisplay";
 
 export default function App() {
   return (
@@ -30,6 +31,7 @@ export default function App() {
         <FavoritesProvider>
           <TeamProvider>
             <DeckProvider>
+              <CountPokemonDisplay />
               <BrowserRouter>
                 <nav>
                   <NavLink to="/" end>

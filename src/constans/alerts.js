@@ -9,3 +9,6 @@ export const AÑADIO_FAVORITOS = "Este Pokémon se añadio a favoritos";
 export const QUITAR_EQUIPO = "Este Pokémon se quito del equipo";
 export const QUITAR_FAVORITOS = "Este Pokémon se quito de favoritos";
 export const AÑADIO_PUNTOS = "Se añadió 1 punto por esta carta"
+export const AÑADIO_PUNTOS_MULTIPLES = (count) =>
+  `Se añadieron ${count} puntos por estas cartas`;
+

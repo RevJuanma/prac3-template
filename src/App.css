@@ -6,7 +6,6 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
-}
 
 /* --------------------------------------------------------------------
    Navegación principal
@@ -27,7 +26,7 @@ nav a {
 }
 
 nav a:hover {
-  background-color: #f0f0f0;
+  background-color: #40445c;
 }
 
 nav a.active {

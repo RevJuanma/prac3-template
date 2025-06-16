@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import useLocalStorage from "../hooks/UseLocalStorage";
 import { FavoritesContext } from "./FavoritesContext";
 import { TeamContext } from "./TeamContext";
+export const MAX_DECK_SIZE = 50;
 
 export const DeckContext = React.createContext();
 export function DeckProvider({ children }) {
@@ -17,19 +18,26 @@ export function DeckProvider({ children }) {
         return curr.filter((x) => x !== id);
       } else {
         const nonFavCount = curr.filter((x) => !favs.includes(x)).length;
-        if (nonFavCount < 50) return [...curr, id];
+        if (nonFavCount < MAX_DECK_SIZE) return [...curr, id];
         return curr;
       }
     });
   };
 
-  const isFilled = () => {
-    const nonFavCount = deck.filter((x) => !favs.includes(x)).length;
-    return nonFavCount === 50;
-  };
+  const deckSize = () => deck.filter((id) => !favs.includes(id)).length;
+  const availableSlots = () => MAX_DECK_SIZE - deckSize();
 
   return (
-    <DeckContext.Provider value={{ deck, toggleDeck, isInDeck, isFilled }}>
+    <DeckContext.Provider
+      value={{
+        deck,
+        toggleDeck,
+        isInDeck,
+        deckSize,
+        availableSlots,
+        isFilled: () => deckSize() >= MAX_DECK_SIZE,
+      }}
+    >
       {children}
     </DeckContext.Provider>
   );

@@ -5,9 +5,9 @@ import { toast } from "react-toastify";
 import { useFavorites } from "../../context/FavoritesContext";
 import {
   LIMITE_DE_MAZO,
-  POKEMON_EN_FAVORITOS_NO_PUEDE_ELIMINARSE_DEL_MAZO,
-  POKEMON_EN_EQUIPO_NO_PUEDE_ELIMINARSE_DEL_MAZO,
-  SELECT_POKEMON_REQUIRED, AÑADIO_PUNTOS
+  AÑADIO_PUNTOS_MULTIPLES,
+  SELECT_POKEMON_REQUIRED,
+  AÑADIO_PUNTOS,
 } from "../../constans/alerts";
 import { FaPlus } from "react-icons/fa";
 import { usePoints } from "../../context/PointsContext";
@@ -18,19 +18,22 @@ export default function PokemonBooster({
   maxSelection = 1,
   onClose,
 }) {
-  const { toggleDeck, isInDeck, isFilled } = useDeck();
+  const { toggleDeck, isInDeck, isFilled, availableSlots } = useDeck();
   const { isFavorite } = useFavorites();
   const [selected, setSelected] = useState([]);
-  const [maxSelectionReached, setMaxSelectionReached] = useState(false);
+    const [maxSelectionReached, setMaxSelectionReached] = useState(false);
   const { incrementPoints } = usePoints();
 
-  // IDs aleatorios de Pokémon
-  const pokemonIds = useMemo(() => {
-    return Array.from({ length: 151 }, (_, i) => i + 1)
-      .sort(() => Math.random() - 0.5)
-      .slice(0, count);
-  }, [count]);
+  // Genera IDs aleatorios para el booster
+  const pokemonIds = useMemo(
+    () =>
+      Array.from({ length: 151 }, (_, i) => i + 1)
+        .sort(() => Math.random() - 0.5)
+        .slice(0, count),
+    [count]
+  );
 
+  // Maneja selección local
   const toggleSelected = (id) => {
     setSelected((prev) => {
       // Si ya estaba seleccionado, lo quitamos
@@ -52,25 +55,40 @@ export default function PokemonBooster({
 
   const addSelectedToDeck = () => {
     if (selected.length < maxSelection) {
-      toast.warn(
-        SELECT_POKEMON_REQUIRED(maxSelection)
-      );
+      toast.warn(SELECT_POKEMON_REQUIRED(maxSelection));
       return;
     }
+
+    // Chequeo inicial de si el mazo ya estaba lleno
+    const initiallyFull = isFilled();
+    // Contador local de cuántos acabo de añadir
+    let addedCount = 0;
+    let pointExchangeCount = 0;
+
+    // Procesa cada seleccionado, pero sin toasts de puntos repetidos
     selected.forEach((id) => {
-      if (isFavorite(id)) {
-        toast.warn(POKEMON_EN_FAVORITOS_NO_PUEDE_ELIMINARSE_DEL_MAZO);
-      } else if (isFilled() && !isInDeck(id)) {
-        toast.warn(LIMITE_DE_MAZO);
-        toast.info(AÑADIO_PUNTOS);
-        incrementPoints(1);
+      if (initiallyFull || addedCount >= availableSlots() || isInDeck(id)) {
+        // Marca para canje de puntos
+        pointExchangeCount++;
       } else {
-        toast.success(`¡Pokémon #${id} agregado al mazo!`);
+        // Primer Pokémon que entra al mazo
         toggleDeck(id);
+        toast.success(`¡Pokémon #${id} agregado al mazo!`);
+        addedCount += 1;
       }
     });
+
+    // Si hubo canjes de puntos, una sola alerta global
+    if (pointExchangeCount > 0) {
+      incrementPoints(pointExchangeCount);
+      toast.warn(LIMITE_DE_MAZO);
+      pointExchangeCount === 1
+        ? toast.info(AÑADIO_PUNTOS)
+        : toast.info(AÑADIO_PUNTOS_MULTIPLES(pointExchangeCount));
+    }
+
     setSelected([]);
-    onClose(); // avisamos al padre para cerrar el sobre
+    onClose();
   };
 
   return (
@@ -127,8 +145,7 @@ export default function PokemonBooster({
               borderRadius: "8px",
             }}
           >
-            <FaPlus />
-            Agregar {selected.length} al mazo
+            <FaPlus /> Agregar {selected.length} al mazo
           </button>
         </div>
       )}

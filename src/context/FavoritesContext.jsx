@@ -1,5 +1,6 @@
 import React, { createContext, useContext } from "react";
 import useLocalStorage from "../hooks/UseLocalStorage";
+export const MAX_FAVS_SIZE = 10;
 
 export const FavoritesContext = createContext();
 export function FavoritesProvider({ children }) {
@@ -11,14 +12,14 @@ export function FavoritesProvider({ children }) {
     setFavs((curr) =>
       curr.includes(id)
         ? curr.filter((x) => x !== id)
-        : curr.length < 10
+        : curr.length < MAX_FAVS_SIZE
         ? [...curr, id]
         : curr
     );
   };
   const setCustomName = (id, name) =>
     setCustomNames((curr) => ({ ...curr, [id]: name }));
-  const isFilledFavorites = () => favs.length === 10;
+  const isFilledFavorites = () => favs.length === MAX_FAVS_SIZE;
 
   return (
     <FavoritesContext.Provider

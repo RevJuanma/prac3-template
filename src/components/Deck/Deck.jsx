@@ -10,15 +10,18 @@ import {
   LIMITE_EQUIPO,
   AÑADIO_EQUIPO,
   QUITAR_EQUIPO,
+  AÑADIO_PUNTOS,
 } from "../../constans/alerts";
 import { toast } from "react-toastify";
 import Pagination from "../Pagination/Pagination";
 import { useMemo, useState } from "react";
+import { usePoints } from "../../context/PointsContext";
 
 export default function Deck() {
   const { toggleDeck, deck } = useDeck();
   const { toggleTeam, isInTeam, isFilledTeams } = useTeam();
   const { isFavorite } = useFavorites();
+  const { incrementPoints } = usePoints();
 
   // Estado de paginación
   const [currentPage, setCurrentPage] = useState(1);
@@ -64,6 +67,8 @@ export default function Deck() {
                 toast.warn(POKEMON_EN_EQUIPO_NO_PUEDE_ELIMINARSE_DEL_MAZO);
               } else {
                 toggleDeck(id);
+                incrementPoints (1);
+                toast.info (AÑADIO_PUNTOS);
               }
             },
           };
