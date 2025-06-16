@@ -119,7 +119,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .name(userRegisterRequest.name())
                 .password(encodedPassword)
                 .email(userRegisterRequest.email())
-                .balance(BigDecimal.valueOf(100))
+                .balance(BigDecimal.valueOf(10000))
                 .roles(Collections.singleton(Role.USER))
                 .inventory(inventory)
                 .deck(deck)

@@ -9,6 +9,7 @@ import lautadev.pokeme.app.Repositories.TypeBoosterPackRepository;
 import lautadev.pokeme.app.Services.boosterPack.TypeBoosterPackService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -20,6 +21,7 @@ public class TypeBoosterPackServiceImpl implements TypeBoosterPackService {
     private final TypeBoosterPackRepository typeBoosterPackRepository;
 
     @Override
+    @Transactional
     public void createTypeBoosterPack(CreateTypeBoosterPackRequest createTypeBoosterPackRequest) {
         TypeBoosterPack typeBoosterPack = createTypeBoosterPackFromDTO(createTypeBoosterPackRequest);
         typeBoosterPackRepository.save(typeBoosterPack);
