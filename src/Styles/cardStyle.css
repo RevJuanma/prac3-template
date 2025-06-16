@@ -1,0 +1,42 @@
+.poke-container {
+  display:grid;
+  align-content: center;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 50px;
+  padding: 0px;
+  margin-left: 400px;
+  margin-top: 100px;
+  margin-bottom: 100px;
+}
+
+.imagen-fondo {
+  background-color: white;
+  border: 3px solid #a8a8a8;
+  border-radius: 10px;
+  padding: 50px;
+}
+.card img {
+  width: 170px;
+}
+
+.card {
+  width: 300px;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  color: #000000;
+}
+
+p{
+  font-family:Georgia, 'Times New Roman', Times, serifs;
+  text-align: center;
+}
+
+
+.text-style{
+  text-align:unset;
+}
+
+.align-text{
+  text-align:unset;
+}

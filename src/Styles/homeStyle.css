@@ -1,0 +1,60 @@
+
+.title-center {
+    margin-top: 45px;
+    text-align: center;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+
+.text-left {
+    justify-content: left;
+    margin-left: 65px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.sobres-container {
+    display:flex;
+    gap: 200px;
+    font-family:Arial, Helvetica, sans-serif;
+    align-items: center;
+    margin-left: 500px;
+    margin-top: 85px;
+
+}
+
+.basic-card {
+    width: 300px; 
+    border-radius: 10px;
+    text-align: center;
+    color: white;
+    background-color: rgb(101, 45, 153);
+    border: 3px solid rgb(75, 34, 113);
+
+    
+}
+
+.premium-card{
+    width: 300px; 
+    border-radius: 10px;
+    text-align: center;
+    color: black;
+    background-color: #FFD700;
+    border: 3px solid #d6ab10;
+
+
+}
+
+.size-img {
+    height: 250px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.text-final {
+    justify-content: left;
+    margin-left: 65px;
+    margin-bottom: 40px;
+    font-family: Arial, Helvetica, sans-serif;
+
+}
+
