@@ -12,16 +12,17 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "card_pokemon")
 public class CardPokemon {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idCustom;
+    private Long id;
     @Column(nullable = false)
     private Long idPokemon;
     @Column(nullable = false, precision = 38, scale = 16)
     private BigDecimal value;
-    private String rename;
+    private String customName;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "inventory_id")
     private Inventory inventory;
