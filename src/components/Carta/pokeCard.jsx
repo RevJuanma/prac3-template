@@ -1,5 +1,5 @@
 import React from 'react';
-import { tipoColores, } from '../../utils/pokeData';
+import { tipoColores, } from '../../utils/pokeTipos';
 import './pokeCard.css'
 
 export default function CartaPokemon({pkmn,onAction,deck=[],favoritos=[],team=[]}) {

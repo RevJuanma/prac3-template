@@ -37,6 +37,13 @@
   max-width: 1000px;
 }
 
+.subTitulo{
+  display: flex;
+  justify-content: center;
+  margin: auto;
+  max-width: 400px;
+}
+
 .btnPlay{
   display: flex;
   flex-direction: row;
@@ -50,4 +57,9 @@
   text-decoration: none;
   font-style: italic;
   font-family: Arial, Helvetica, sans-serif;
+}
+
+.btnPlay:hover{
+  transition: transform 0.3s;
+  transform: scale(0.95);
 }
