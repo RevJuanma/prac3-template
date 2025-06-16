@@ -11,31 +11,29 @@ const router = createBrowserRouter([
   {
     path:"/",
     element:<App></App>,
-    children:[
+  },
+  {
+    path:"auth/",
+    element:<Layout></Layout>,
+    children: [
       {
-        path:"auth/",
-        element:<Layout></Layout>,
-        children: [
-          {
-            path:"Home",
-            element:<HomeScreen></HomeScreen>
-          },
-          {
-            path:"Team",
-            element:<TeamScreen></TeamScreen>
-          },
-          {
-            path:"Favorites",
-            element:<FavoritesScreen></FavoritesScreen>
-          },
-          {
-            path:"Sobres",
-            element:<BoosterScreen></BoosterScreen>
-          },
-        ],
-      }
-    ]
-  }
+        path:"Home",
+        element:<HomeScreen></HomeScreen>
+      },
+      {
+        path:"Team",
+        element:<TeamScreen></TeamScreen>
+      },
+      {
+        path:"Favorites",
+        element:<FavoritesScreen></FavoritesScreen>
+      },
+      {
+        path:"Sobres",
+        element:<BoosterScreen></BoosterScreen>
+      },
+    ],
+  },
 ]);
 
 createRoot(document.getElementById('root')).render(

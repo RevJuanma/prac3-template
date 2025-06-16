@@ -8,8 +8,6 @@ function HomeScreen() {
         puntos, cartas, favoritos, equipo, accionCarta
     } = useOutletContext();
 
-
-
     return (
         <div>
             <h1>Mi Mazo</h1>

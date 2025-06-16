@@ -3,7 +3,6 @@ import CartaPokemon from '../../components/Carta/pokeCard';
 import { useOutletContext } from 'react-router';
 
 function TeamScreen() {
-// Obtiene los estados y la función de acción del contexto del Outlet (Layout.jsx)
     const { equipo, favoritos, cartas, accionCarta} = useOutletContext();
 
     return (

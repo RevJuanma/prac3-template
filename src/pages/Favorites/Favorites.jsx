@@ -1,9 +1,8 @@
 import React from 'react';
 import CartaPokemon from '../../components/Carta/pokeCard';
-import { useOutletContext } from 'react-router'; // Importa useOutletContext
+import { useOutletContext } from 'react-router';
 
 function FavoritesScreen() {
-    // Obtiene los estados y la función de acción del contexto del Outlet (Layout.jsx)
     const { favoritos, cartas, equipo, accionCarta } = useOutletContext();
 
     return (
