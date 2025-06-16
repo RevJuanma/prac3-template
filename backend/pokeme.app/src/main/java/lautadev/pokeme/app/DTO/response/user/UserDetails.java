@@ -1,4 +1,4 @@
-package lautadev.pokeme.app.DTO.response.customer;
+package lautadev.pokeme.app.DTO.response.user;
 
 import java.math.BigDecimal;
 

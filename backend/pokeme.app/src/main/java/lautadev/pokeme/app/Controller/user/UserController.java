@@ -1,7 +1,7 @@
-package lautadev.pokeme.app.Controller.customer;
+package lautadev.pokeme.app.Controller.user;
 
-import lautadev.pokeme.app.DTO.response.customer.UserDetails;
-import lautadev.pokeme.app.Services.customer.UserService;
+import lautadev.pokeme.app.DTO.response.user.UserDetails;
+import lautadev.pokeme.app.Services.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

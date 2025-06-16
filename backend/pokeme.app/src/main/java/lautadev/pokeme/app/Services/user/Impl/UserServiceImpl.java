@@ -1,9 +1,9 @@
-package lautadev.pokeme.app.Services.customer.Impl;
+package lautadev.pokeme.app.Services.user.Impl;
 
-import lautadev.pokeme.app.DTO.response.customer.UserDetails;
+import lautadev.pokeme.app.DTO.response.user.UserDetails;
 import lautadev.pokeme.app.Entities.User;
 import lautadev.pokeme.app.Repositories.UserRepository;
-import lautadev.pokeme.app.Services.customer.UserService;
+import lautadev.pokeme.app.Services.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

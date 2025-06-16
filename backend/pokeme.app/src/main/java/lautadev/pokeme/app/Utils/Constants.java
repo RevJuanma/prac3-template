@@ -12,6 +12,8 @@ public class Constants {
             "api/v1/authentication/login",
             "api/v1/authentication/logout",
             "api/v1/authentication/refresh-token",
-            "api/v1/handler/webhook"
+            "api/v1/handler/webhook",
+            "api/v1/type-booster-pack",
+            "api/v1/type-booster-pack/create"
     );
 }

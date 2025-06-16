@@ -1,6 +1,7 @@
 package lautadev.pokeme.app.Security;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -14,6 +15,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @Configuration
 @RequiredArgsConstructor
+@Slf4j
 public class SecurityFilterChainConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -23,6 +25,8 @@ public class SecurityFilterChainConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
+        log.warn("Entro al filter -------->");
+
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(sessionManagementCustomizer ->
@@ -30,7 +34,9 @@ public class SecurityFilterChainConfig {
                 .authenticationProvider(authenticationProvider)
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers(
-                                "api/v1/authentication/**","api/v1/handler/**").permitAll()
+                                "api/v1/authentication/**",
+                                "api/v1/handler/**",
+                                "api/v1/type-booster-pack/**").permitAll()
                         .anyRequest().authenticated())
                 .cors()
                 .and()
