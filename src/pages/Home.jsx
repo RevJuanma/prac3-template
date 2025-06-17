@@ -1,19 +1,15 @@
+
 import { useEffect, useState } from "react";
 import { PokeCard } from "../components";
 import Button from "../components/Button/Button";
 import { usePuntos } from "../context/PuntosContext";
-import {
-  cargarDatosIniciales,
-  toggleFavorito,
-  toggleEquipo,
-  eliminarPorPuntos,
-} from "../functions/home";
+import { cargarDatosIniciales, toggleFavorito, toggleEquipo, eliminarPorPuntos, } from "../functions/home";
 import "./Home.css";
 
 const ITEMS_PER_PAGE = 10;
 
 export default function Home() {
-  const [cartasPoseidas, setCartasPoseidas] = useState([]);
+  const [mazo, setMazo] = useState([]);
   const [paginaActual, setPaginaActual] = useState(1);
   const [favoritos, setFavoritos] = useState([]);
   const [equipo, setEquipo] = useState([]);
@@ -22,13 +18,13 @@ export default function Home() {
 
   useEffect(() => {
     const { cartas, favoritos, equipo } = cargarDatosIniciales();
-    setCartasPoseidas(cartas);
+    setMazo(cartas);
     setFavoritos(favoritos);
     setEquipo(equipo);
   }, []);
 
-  const totalPaginas = Math.ceil(cartasPoseidas.length / ITEMS_PER_PAGE);
-  const cartasMostrar = cartasPoseidas.slice(
+  const totalPaginas = Math.ceil(mazo.length / ITEMS_PER_PAGE);
+  const cartasMostrar = mazo.slice(
     (paginaActual - 1) * ITEMS_PER_PAGE,
     paginaActual * ITEMS_PER_PAGE
   );
@@ -41,11 +37,11 @@ export default function Home() {
   return (
     <div style={{ padding: "20px" }}>
       <h2 className="tittle">Mis Cartas Pokemon</h2>
-      <h4 className="paginaTexto">Cartas: {cartasPoseidas.length}/50</h4>
+      <h4 className="paginaTexto">Cartas: {mazo.length}/50</h4>
       <h3 className="paginaTexto">Puntos: {puntos}</h3>
 
       <div style={{ display: "flex", gap: "15px", flexWrap: "wrap" }}>
-        {cartasPoseidas.length === 0 ? (
+        {mazo.length === 0 ? (
           <p className="paginaTexto"> No tenes cartas</p>
         ) : (
           cartasMostrar.map((poke) => (
@@ -77,7 +73,7 @@ export default function Home() {
                     text="Eliminar por puntos"
                     colorClass="eliminar"
                     onClick={() =>
-                      eliminarPorPuntos(poke.id, cartasPoseidas, setCartasPoseidas, favoritos, setPuntos)
+                      eliminarPorPuntos(poke.id, mazo, setMazo, favoritos, setPuntos)
                     }
                   />
                 </>

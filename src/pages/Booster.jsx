@@ -15,14 +15,14 @@ export default function Booster() {
   const [seleccionados, setSeleccionados] = useState([]);
   const [maxSeleccion, setMaxSeleccion] = useState(0);
   const [cargando, setCargando] = useState(false);
-  const [cartasPoseidas, setCartasPoseidas] = useState([]);
+  const [mazo, setMazo] = useState([]);
 
   // getter para maxSeleccion actualizado
   const getMaxSeleccion = () => maxSeleccion;
 
   useEffect(() => {
     const guardadas = cargarCartasGuardadas();
-    setCartasPoseidas(guardadas);
+    setMazo(guardadas);
   }, []);
 
   return (
@@ -30,7 +30,7 @@ export default function Booster() {
       <h2 className="puntos">Puntos: {puntos}</h2>
 
       <h4 className="paginaTexto">
-        Cartas: {cartasPoseidas.length} / 50
+        Cartas: {mazo.length} / 50
       </h4>
 
       <div style={{ display: "flex", gap: "20px", marginBottom: "20px" }}>
@@ -85,8 +85,8 @@ export default function Booster() {
                 seleccionados,
                 setSeleccionados,
                 getMaxSeleccion,
-                cartasPoseidas,
-                setCartasPoseidas,
+                mazo,
+                setMazo,
                 setPokemones,
                 setMaxSeleccion
               )

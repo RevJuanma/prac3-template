@@ -40,9 +40,6 @@
 .agregarEquipo {
     background-color: rgb(83, 90, 185)
 }
-.agregarFav {
-    background-color: rgb(111, 116, 73)
-}
 
 /* paginacion */
 .paginacion {
@@ -51,4 +48,11 @@
 .eliminar {
     background-color: rgb(138, 0, 0)
 }
+/* favs section */
+.cambiarNombre{
+    background-color: rgb(150, 189, 217)
 
+}
+.agregarFav {
+    background-color: rgb(111, 116, 73)
+}

@@ -1,6 +1,6 @@
 export const cargarCartasGuardadas = () => {
   try {
-    const guardadas = JSON.parse(localStorage.getItem("cartasPoseidas") || "[]");
+    const guardadas = JSON.parse(localStorage.getItem("mazo") || "[]");
     return Array.isArray(guardadas) ? guardadas : [];
   } catch {
     return [];
@@ -49,8 +49,8 @@ export const elegirCarta = (
   seleccionados,
   setSeleccionados,
   getMaxSeleccion,
-  cartasPoseidas,
-  setCartasPoseidas,
+  mazo,
+  setMazo,
   setPokemones,
   setMaxSeleccion
 ) => {
@@ -58,8 +58,8 @@ export const elegirCarta = (
   const maxSeleccion = getMaxSeleccion(); 
 
   if (
-    cartasPoseidas.length >= maxCartas &&
-    !cartasPoseidas.some((c) => c.id === pokemon.id)
+    mazo.length >= maxCartas &&
+    !mazo.some((c) => c.id === pokemon.id)
   ) {
     alert("Solo se puede tener 50 cartas en el mazo.");
     return;
@@ -82,7 +82,7 @@ export const elegirCarta = (
   setSeleccionados(nuevosSeleccionados);
 
   if (nuevosSeleccionados.length === maxSeleccion) {
-    const cartasCombinadas = [...cartasPoseidas];
+    const cartasCombinadas = [...mazo];
 
     nuevosSeleccionados.forEach((nuevaCarta) => {
       const yaExiste = cartasCombinadas.some((c) => c.id === nuevaCarta.id);
@@ -91,8 +91,8 @@ export const elegirCarta = (
       }
     });
 
-    localStorage.setItem("cartasPoseidas", JSON.stringify(cartasCombinadas));
-    setCartasPoseidas(cartasCombinadas);
+    localStorage.setItem("mazo", JSON.stringify(cartasCombinadas));
+    setMazo(cartasCombinadas);
     setSeleccionados([]);
     setPokemones([]);
     setMaxSeleccion(0);

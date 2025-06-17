@@ -1,7 +1,7 @@
 export const cargarEquipoYCartas = () => {
     try {
         const equipoGuardado = JSON.parse(localStorage.getItem("equipo") || "[]");
-        const cartasGuardadas = JSON.parse(localStorage.getItem("cartasPoseidas") || "[]");
+        const cartasGuardadas = JSON.parse(localStorage.getItem("mazo") || "[]");
 
         return {
             equipo: Array.isArray(equipoGuardado) ? equipoGuardado : [],
@@ -12,8 +12,8 @@ export const cargarEquipoYCartas = () => {
     }
 };
 
-export const obtenerEquipoCompleto = (equipoIds, cartasPoseidas) => {
-    return cartasPoseidas.filter((poke) => equipoIds.includes(poke.id));
+export const obtenerEquipoCompleto = (equipoIds, mazo) => {
+    return mazo.filter((poke) => equipoIds.includes(poke.id));
 };
 
 export const removerDeEquipo = (id, equipo) => {

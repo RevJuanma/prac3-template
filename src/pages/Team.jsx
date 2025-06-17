@@ -10,12 +10,12 @@ import {
 
 export default function Team() {
   const [equipo, setEquipo] = useState([]);
-  const [cartasPoseidas, setCartasPoseidas] = useState([]);
+  const [mazo, setMazo] = useState([]);
 
   useEffect(() => {
     const { equipo, cartas } = cargarEquipoYCartas();
     setEquipo(equipo);
-    setCartasPoseidas(cartas);
+    setMazo(cartas);
   }, []);
 
   const handleRemover = (id) => {
@@ -23,7 +23,7 @@ export default function Team() {
     setEquipo(actualizado);
   };
 
-  const equipoCompleto = obtenerEquipoCompleto(equipo, cartasPoseidas);
+  const equipoCompleto = obtenerEquipoCompleto(equipo, mazo);
 
   return (
     <div style={{ padding: "20px" }}>

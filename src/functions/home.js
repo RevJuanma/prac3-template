@@ -1,5 +1,5 @@
 export const cargarDatosIniciales = () => {
-  const cartasGuardadas = localStorage.getItem("cartasPoseidas");
+  const cartasGuardadas = localStorage.getItem("mazo");
   const favoritosGuardados = localStorage.getItem("favoritos");
   const equipoGuardado = localStorage.getItem("equipo");
   const cartas = parseArray(cartasGuardadas);
@@ -61,7 +61,7 @@ export const eliminarPorPuntos = (id, cartas, setCartas, favoritos, setPuntos) =
 
   const nuevoCartas = cartas.filter((c) => c.id !== id);
   setCartas(nuevoCartas);
-  localStorage.setItem("cartasPoseidas", JSON.stringify(nuevoCartas));
+  localStorage.setItem("mazo", JSON.stringify(nuevoCartas));
 
   setPuntos((prev) => prev + 2);
 };

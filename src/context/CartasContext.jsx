@@ -6,14 +6,14 @@ export const CartasProvider = ({ children }) => {
   const [cartas, setCartas] = useState([]);
 
   useEffect(() => {
-    const cartasGuardadas = JSON.parse(localStorage.getItem("cartasPoseidas") || "[]");
+    const cartasGuardadas = JSON.parse(localStorage.getItem("mazo") || "[]");
     setCartas(cartasGuardadas);
   }, []);
 
   const eliminarCarta = (id) => {
     setCartas((prev) => {
       const filtradas = prev.filter((c) => c.id !== id);
-      localStorage.setItem("cartasPoseidas", JSON.stringify(filtradas));
+      localStorage.setItem("mazo", JSON.stringify(filtradas));
       return filtradas;
     });
   };

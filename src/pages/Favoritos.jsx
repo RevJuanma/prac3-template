@@ -2,21 +2,21 @@ import { useEffect, useState } from "react";
 import { PokeCard } from "../components";
 import "./Home.css";
 import Button from "../components/Button/Button";
-import { obtenerCartasYFavoritos, eliminarFavorito } from "../functions/favoritos";
+import { obtenerCartasYFavoritos, eliminarFavorito, cambiarNombre } from "../functions/favoritos";
 
 const MAX_FAVORITOS = 10;
 
 export default function Favoritos() {
-  const [cartasPoseidas, setCartasPoseidas] = useState([]);
+  const [mazo, setMazo] = useState([]);
   const [favoritos, setFavoritos] = useState([]);
 
   useEffect(() => {
     const { cartas, favoritos } = obtenerCartasYFavoritos();
-    setCartasPoseidas(cartas);
+    setMazo(cartas);
     setFavoritos(favoritos);
   }, []);
 
-  const cartasFavoritas = cartasPoseidas.filter((carta) =>
+  const cartasFavoritas = mazo.filter((carta) =>
     favoritos.includes(carta.id)
   );
 
@@ -34,13 +34,26 @@ export default function Favoritos() {
               pokemon={poke}
               ButtonComponent={Button}
               extraButtons={
-                <Button
-                  text="Eliminar de favoritos"
-                  colorClass="paginacion"
-                  onClick={() =>
-                    eliminarFavorito(poke.id, favoritos, setFavoritos)
-                  }
-                />
+                <>
+
+
+
+                  <Button
+                    text="Eliminar de favoritos"
+                    colorClass="paginacion"
+                    onClick={() =>
+                      eliminarFavorito(poke.id, favoritos, setFavoritos)
+                    }
+                  />
+                  <Button
+                    text="Cambiar nombre"
+                    colorClass="cambiarNombre"
+                    onClick={() =>
+                      cambiarNombre()
+                    }
+                  />
+
+                </>
               }
             />
           ))}
