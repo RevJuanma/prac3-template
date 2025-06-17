@@ -10,6 +10,7 @@ import lautadev.pokeme.app.Entities.*;
 import lautadev.pokeme.app.Entities.enums.Quality;
 import lautadev.pokeme.app.Exceptions.ApiException;
 import lautadev.pokeme.app.Repositories.CardPokemonRepository;
+import lautadev.pokeme.app.Repositories.InventoryRepository;
 import lautadev.pokeme.app.Services.pokemonBoosterPack.CardPokemonService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +36,7 @@ import static lautadev.pokeme.app.Utils.Constants.BASE_URL;
 public class CardPokemonServiceImpl implements CardPokemonService {
 
     private final CardPokemonRepository cardPokemonRepository;
+    private final InventoryRepository inventoryRepository;
     private final PokemonCacheService pokemonCacheService;
     private final BoosterPackCacheService boosterPackCacheService;
 
@@ -47,11 +49,16 @@ public class CardPokemonServiceImpl implements CardPokemonService {
         String sessionId = pokemonSelectionRequest.sessionId();
         List<Long> selectedPokemonIds = pokemonSelectionRequest.selectedPokemonIds();
 
+        validateUniqueIds(selectedPokemonIds);
+
         BoosterPackCacheEntry entry = boosterPackCacheService.get(sessionId)
                 .orElseThrow(() -> new ApiException("Session expired or invalid"));
 
+        validateRequiredSelectionCount(entry,selectedPokemonIds);
         validateMaxSelectable(entry,selectedPokemonIds);
         validateIdPokemonInSelection(entry,selectedPokemonIds);
+
+        Inventory inventory = user.getInventory();
 
         for (Long id : selectedPokemonIds) {
             ShowCardPokemonResponse pokemon = entry.getPokemon().stream()
@@ -61,7 +68,10 @@ public class CardPokemonServiceImpl implements CardPokemonService {
 
             CardPokemon card = mapToCardPokemon(pokemon, user);
             cardPokemonRepository.save(card);
+
+            inventory.setSlotUsed(inventory.getSlotUsed() + 1);
         }
+        inventoryRepository.save(inventory);
 
         boosterPackCacheService.invalidate(sessionId);
     }
@@ -184,6 +194,29 @@ public class CardPokemonServiceImpl implements CardPokemonService {
             if (!validIds.contains(id)) {
                 throw new ApiException("Invalid Pokémon selection");
             }
+        }
+    }
+
+    private void validateUniqueIds(List<Long> selectedPokemonIds) {
+        Set<Long> uniqueIds = new HashSet<>(selectedPokemonIds);
+        if (uniqueIds.size() < selectedPokemonIds.size()) {
+            throw new ApiException("Duplicate Pokémon selections are not allowed.");
+        }
+    }
+
+    private void validateRequiredSelectionCount(BoosterPackCacheEntry entry,List<Long> selectedPokemonIds) {
+        int requiredSelectionCount;
+
+        if (entry.getQuality() == Quality.BASIC) {
+            requiredSelectionCount = 1;
+        } else if (entry.getQuality() == Quality.PREMIUM) {
+            requiredSelectionCount = 2;
+        } else {
+            throw new ApiException("Undefined Quality");
+        }
+
+        if (selectedPokemonIds.size() != requiredSelectionCount) {
+            throw new ApiException("You must select exactly " + requiredSelectionCount + " Pokémon(s) for this booster pack.");
         }
     }
 }

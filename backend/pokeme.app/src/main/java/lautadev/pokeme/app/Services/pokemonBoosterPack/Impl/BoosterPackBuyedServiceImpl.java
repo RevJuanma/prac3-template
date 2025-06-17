@@ -8,8 +8,10 @@ import lautadev.pokeme.app.Entities.BoosterPackBuyed;
 import lautadev.pokeme.app.Entities.BoosterPackCacheEntry;
 import lautadev.pokeme.app.Entities.TypeBoosterPack;
 import lautadev.pokeme.app.Entities.User;
+import lautadev.pokeme.app.Entities.enums.Quality;
 import lautadev.pokeme.app.Exceptions.ApiException;
 import lautadev.pokeme.app.Repositories.BoosterPackBuyedRepository;
+import lautadev.pokeme.app.Repositories.InventoryRepository;
 import lautadev.pokeme.app.Repositories.TypeBoosterPackRepository;
 import lautadev.pokeme.app.Services.pokemonBoosterPack.BoosterPackBuyedService;
 import lautadev.pokeme.app.Services.pokemonBoosterPack.CardPokemonService;
@@ -31,6 +33,7 @@ public class BoosterPackBuyedServiceImpl implements BoosterPackBuyedService {
     private final BoosterPackCacheService boosterPackCacheService;
     private final TypeBoosterPackRepository typeBoosterPackRepository;
     private final CardPokemonService cardPokemonService;
+    private final InventoryRepository inventoryRepository;
     private final UserService userService;
 
     @Override
@@ -53,6 +56,8 @@ public class BoosterPackBuyedServiceImpl implements BoosterPackBuyedService {
         User user = getUserLoggedSecurityContext();
         BoosterPackBuyed boosterPackBuyed = boosterPackBuyedRepository.findByIdAndUserIdAndCountNotZero(id,user.getId())
                 .orElseThrow(()-> new ApiException("Booster pack not found"));
+
+        validateSlotInInventory(user.getId(),boosterPackBuyed.getTypeBoosterPack().getQuality());
 
         List<ShowCardPokemonResponse> showCardPokemonResponses = cardPokemonService.loadPokemonByQualityPack(boosterPackBuyed.getTypeBoosterPack().getQuality());
 
@@ -108,5 +113,23 @@ public class BoosterPackBuyedServiceImpl implements BoosterPackBuyedService {
         String sessionId = user.getId() + ":" + boosterPackBuyed.getId();
         boosterPackCacheService.put(sessionId, new BoosterPackCacheEntry(showCardPokemonResponses, boosterPackBuyed.getTypeBoosterPack().getQuality()));
         return sessionId;
+    }
+
+    private void validateSlotInInventory(Long userId, Quality quality) {
+        int necessarySlots;
+
+        if (quality == Quality.BASIC) {
+            necessarySlots = 1;
+        } else if (quality == Quality.PREMIUM) {
+            necessarySlots = 2;
+        } else {
+            throw new ApiException("Undefined Quiality");
+        }
+
+        boolean availableSlots = inventoryRepository.hasEnoughSlots(userId,necessarySlots);
+
+        if(!availableSlots) {
+            throw new ApiException("Insufficient Slots");
+        }
     }
 }
