@@ -38,7 +38,7 @@ public class InventoryServiceImpl implements InventoryService {
         Inventory inventory  = inventoryRepository.findByUserId(user.getId())
                 .orElseThrow(InventoryNotFoundException::new);
 
-        Page<CardPokemon> page = cardPokemonRepository.findByInventoryId(inventory.getId(), pageable);
+        Page<CardPokemon> page = cardPokemonRepository.findByInventoryIdAndIsDeletedFalse(inventory.getId(), pageable);
 
         return buildInventoryDTOResponse(inventory,page);
     }

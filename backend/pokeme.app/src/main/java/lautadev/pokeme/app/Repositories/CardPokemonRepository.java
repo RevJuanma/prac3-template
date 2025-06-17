@@ -12,7 +12,8 @@ import java.math.BigDecimal;
 
 @Repository
 public interface CardPokemonRepository extends JpaRepository<CardPokemon,Long> {
-    Page<CardPokemon> findByInventoryId(Long inventoryId, Pageable pageable);
-    @Query("SELECT COALESCE(SUM(c.value), 0) FROM CardPokemon c WHERE c.inventory.id = :inventoryId")
+    Page<CardPokemon> findByInventoryIdAndIsDeletedFalse(Long inventoryId, Pageable pageable);
+    @Query("SELECT COALESCE(SUM(c.value), 0) FROM CardPokemon c WHERE c.inventory.id = :inventoryId AND c.isDeleted = false")
     BigDecimal sumValueByInventoryId(@Param("inventoryId") Long inventoryId);
+
 }

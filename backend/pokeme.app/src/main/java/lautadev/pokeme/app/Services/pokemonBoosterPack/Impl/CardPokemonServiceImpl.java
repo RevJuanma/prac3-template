@@ -9,9 +9,11 @@ import lautadev.pokeme.app.DTO.response.boosterPack.StatsPokemonDTO;
 import lautadev.pokeme.app.Entities.*;
 import lautadev.pokeme.app.Entities.enums.Quality;
 import lautadev.pokeme.app.Exceptions.ApiException;
+import lautadev.pokeme.app.Exceptions.CardPokemonNotFoundException;
 import lautadev.pokeme.app.Repositories.CardPokemonRepository;
 import lautadev.pokeme.app.Repositories.InventoryRepository;
 import lautadev.pokeme.app.Services.pokemonBoosterPack.CardPokemonService;
+import lautadev.pokeme.app.Services.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -39,7 +41,7 @@ public class CardPokemonServiceImpl implements CardPokemonService {
     private final InventoryRepository inventoryRepository;
     private final PokemonCacheService pokemonCacheService;
     private final BoosterPackCacheService boosterPackCacheService;
-
+    private final UserService userService;
 
     @Override
     @Transactional
@@ -124,6 +126,23 @@ public class CardPokemonServiceImpl implements CardPokemonService {
         return pool.stream()
                 .map(this::buildShowCardPokemonResponse)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public void sellCardPokemon(Long pokemonId) {
+        CardPokemon cardPokemon = cardPokemonRepository.findById(pokemonId)
+                .orElseThrow(CardPokemonNotFoundException::new);
+
+        userService.increaseBalance(cardPokemon.getValue());
+        cardPokemon.setDeleted(true);
+        cardPokemonRepository.save(cardPokemon);
+
+        // TODO: Manejar los slots disponibles mediante una Query en InventoryRepository
+        User user = getUserLoggedSecurityContext();
+        Inventory inventory = user.getInventory();
+        inventory.setSlotUsed(inventory.getSlotUsed() - 1);
+        inventoryRepository.save(inventory);
     }
 
     private List<Integer> chooseRandom(List<Integer> list, int count) {

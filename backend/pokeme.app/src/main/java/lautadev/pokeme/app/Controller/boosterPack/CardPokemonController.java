@@ -6,10 +6,7 @@ import lautadev.pokeme.app.DTO.response.GenericResponse;
 import lautadev.pokeme.app.Services.pokemonBoosterPack.CardPokemonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,5 +20,11 @@ public class CardPokemonController {
                                                              PokemonSelectionRequest pokemonSelectionRequest) {
         cardPokemonService.saveSelectedPokemon(pokemonSelectionRequest);
         return ResponseEntity.ok(new GenericResponse("Selected Pokémon successfully"));
+    }
+
+    @DeleteMapping("/sell/{id}")
+    public ResponseEntity<GenericResponse> sellCardPokemon(@PathVariable Long id) {
+        cardPokemonService.sellCardPokemon(id);
+        return ResponseEntity.ok(new GenericResponse("Sold Pokémon successfully"));
     }
 }

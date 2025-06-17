@@ -9,4 +9,5 @@ import java.util.List;
 public interface CardPokemonService {
     void saveSelectedPokemon(PokemonSelectionRequest pokemonSelectionRequest);
     List<ShowCardPokemonResponse> loadPokemonByQualityPack(Quality quality);
+    void sellCardPokemon(Long pokemonId);
 }

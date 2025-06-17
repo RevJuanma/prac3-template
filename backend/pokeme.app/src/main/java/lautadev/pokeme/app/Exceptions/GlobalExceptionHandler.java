@@ -29,6 +29,14 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(CardPokemonNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleUserNotFoundException(CardPokemonNotFoundException ex) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("error", ex.getMessage());
+        body.put("status", HttpStatus.NOT_FOUND.value());
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<Map<String, Object>> handlerApiException(AccessDeniedException ex) {
         Map<String, Object> body = new HashMap<>();
