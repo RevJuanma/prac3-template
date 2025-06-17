@@ -20,7 +20,7 @@ public class Favorite {
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
-    @OneToMany(mappedBy = "favorite", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "favorite", cascade = CascadeType.ALL)
     private Set<CardPokemon> pokemons = new HashSet<>();
     private int slotUsed;
 }
