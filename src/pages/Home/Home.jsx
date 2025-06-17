@@ -6,7 +6,7 @@ import './Home.css'
 
 function HomeScreen() {
     const {
-        puntos, cartas, favoritos, equipo, accionCarta
+        puntos, setPuntos, cartas, setCartas, favoritos, setFavoritos, equipo, setEquipo, accionCarta
     } = useOutletContext();
 
     return (
@@ -34,6 +34,11 @@ function HomeScreen() {
                     ))
                 )}
             </div>
+            <footer>
+                <button className="btnRestart" onClick={() => {setPuntos(100);setCartas([]);setFavoritos([]);setEquipo([]);localStorage.clear();}}>
+                  Reiniciar progreso
+                </button>
+            </footer>
         </div>
     );
 

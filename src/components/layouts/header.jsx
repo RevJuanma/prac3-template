@@ -1,13 +1,45 @@
-import {React, useState} from "react";
+import {React, useState, useEffect} from "react";
 import { Outlet, Link, useOutletContext } from "react-router";
 import pokeTitle from "../../assets/pokeTitle.svg";
 import "../../App.css";
 
 const pkmnHeader = () => {
-    const [puntos, setPuntos] = useState(100); // Se inicia con 100 puntos
-    const [cartas, setCartas] = useState([]);
-    const [favoritos, setFavoritos] = useState([]);
-    const [equipo, setEquipo] = useState([]);
+    const [puntos, setPuntos] = useState(() => 
+    {
+      const saved = localStorage.getItem('puntos');
+      return saved ? JSON.parse(saved) : 100;
+    }
+    );
+    const [cartas, setCartas] = useState(() => 
+    {
+      const saved = localStorage.getItem('cartas');
+      return saved ? JSON.parse(saved) : [];
+    }
+    );
+    const [favoritos, setFavoritos] = useState(() => 
+    {
+      const saved = localStorage.getItem('favoritos');
+      return saved ? JSON.parse(saved) : [];
+    }
+    );
+    const [equipo, setEquipo] = useState(() => 
+    {
+      const saved = localStorage.getItem('equipo');
+      return saved ? JSON.parse(saved) : [];
+    }
+    );
+    useEffect(() => {
+      localStorage.setItem('puntos', JSON.stringify(puntos));
+    }, [puntos]);
+    useEffect(() => {
+      localStorage.setItem('cartas', JSON.stringify(cartas));
+    }, [cartas]);
+    useEffect(() => {
+      localStorage.setItem('favoritos', JSON.stringify(favoritos));
+    }, [favoritos]);
+    useEffect(() => {
+      localStorage.setItem('equipo', JSON.stringify(equipo));
+    }, [equipo]);
 
     const accionCarta = (action, data) => {
       switch (action) {

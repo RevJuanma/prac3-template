@@ -34,6 +34,10 @@
     font-weight: bold;
 }
 
+.pokeCard button:hover{
+    cursor: pointer;
+}
+
 .renombrar{
     background-Color:purple;
     color:white;

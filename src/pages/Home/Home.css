@@ -1,3 +1,17 @@
+.btnRestart{
+    display: flex;
+    background-color: #f23;
+    color: #fff;
+    border-radius: 10px;
+    border:none;
+    font: caption;
+    font-weight: bold;
+    padding: 10px;
+}
+
+.btnRestart:hover{
+    cursor:pointer;
+}
 
 .cartas{
     display: flex;
