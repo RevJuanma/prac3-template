@@ -18,6 +18,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -34,16 +35,10 @@ public class InventoryServiceImpl implements InventoryService {
     public InventoryDTO myInventory(Pageable pageable) {
         User user = getUserLoggedSecurityContext();
 
-        log.warn("Hasta aca llega myInventory");
-
         Inventory inventory  = inventoryRepository.findByUserId(user.getId())
                 .orElseThrow(InventoryNotFoundException::new);
 
-        log.warn("Inventory ID para consulta de pokemons: {}", inventory.getId());
-
         Page<CardPokemon> page = cardPokemonRepository.findByInventoryId(inventory.getId(), pageable);
-
-        log.warn("Cantidad de pokemons paginados: {}", page.getNumberOfElements());
 
         return buildInventoryDTOResponse(inventory,page);
     }
@@ -53,10 +48,13 @@ public class InventoryServiceImpl implements InventoryService {
                 .map(this::mapToShowCardPokemonResponse)
                 .collect(Collectors.toList());
 
+        BigDecimal estimatedPrice = cardPokemonRepository.sumValueByInventoryId(inventory.getId());
+
         InventoryDTO dto = new InventoryDTO();
         dto.setId(inventory.getId());
         dto.setSlotUsed(inventory.getSlotUsed());
         dto.setPokemon(pokemonDtoList);
+        dto.setEstimatedPrice(estimatedPrice);
 
         return dto;
     }
