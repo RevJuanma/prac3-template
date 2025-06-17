@@ -2,13 +2,14 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap:12px;
-    height: 300px;
-    width: 250px;      
-    border-style: solid;
-    border-color:rgb(0, 0, 0);
+    gap: 12px;
+    width: 250px;                          
+    padding: 12px;
+
+    border: 1px solid #000;
+    box-sizing: border-box; 
 }
 
-.poke-card h2 {
-    font-size:18px;
+.poke-card h2{
+    font-size: 18px;
 }

@@ -1,4 +1,5 @@
 import useMyPokemons from "./useMyPokemons";
+import useMyTeam from "./useMyTeam";
 import useMyFavorites from "./useMyfavorites";
 import usePoints from "./usePoints";
 
@@ -10,6 +11,11 @@ export function useHasReachedCollectionLimit(limit = 50) {
 export function useHasReachedFavoritesLimit(limit = 10) {
   const { favorites } = useMyFavorites();
   return favorites.length >= limit;
+}
+
+export function useHasReachedTeamLimit(limit = 6) {
+  const { team } = useMyTeam();
+  return team.length >= limit;
 }
 
 export function useHasReachedPointsLimit(limit = 0) {

@@ -1,20 +1,20 @@
-import React from "react";
+import {useEffect} from "react";
+import SinglePokeCard from "./singlePokeCard";
 import "./pokeCard.css";
 import { usePokemon } from "../../hooks/usePokemonAPI";
 import useMyPokemons from "../../hooks/useMyPokemons";
 import useMyFavorites from "../../hooks/useMyfavorites";
 import useMyTeam from "../../hooks/useMyTeam";
 import usePoints from "../../hooks/usePoints";
-import {useHasReachedCollectionLimit, useHasReachedFavoritesLimit} from "../../hooks/useLimits"
 
-const PokeCard = ({ id }) => {
-  const stateCollection=useHasReachedCollectionLimit();
-  const stateFavorites=useHasReachedFavoritesLimit();
-  const {sumarPoints}=usePoints()
+
+const PokeCard = ({ id, limitCollectionSelect = null, selectedCount = 0, incrementSelected = null, openPacks = false }) => {
+
+  const { sumarPoints } = usePoints();
   const { data, loading, error } = usePokemon(id);
   const { collection, agregarPokemon, eliminarPokemon } = useMyPokemons();
   const { favorites, agregarFavorito, eliminarFavorito } = useMyFavorites();
-  const { team, agregarAlEquipo, eliminarDelEquipo }=useMyTeam()
+  const { team, agregarAlEquipo, eliminarDelEquipo } = useMyTeam();
 
   if (loading) return <p>Cargando...</p>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;
@@ -23,41 +23,23 @@ const PokeCard = ({ id }) => {
   return (
     <>
       {data.map((pokemon) => (
-        <div className="poke-card" key={pokemon.id}>
-          <h2>{pokemon.name.toUpperCase()}</h2>
-          <img src={pokemon.sprites.front_default} alt={pokemon.name} />
-          <p>Altura: {pokemon.height}</p>
-          <p>Peso: {pokemon.weight}</p>
-          <p>Tipo(s): {pokemon.types.map((t) => t.type.name).join(", ")}</p>
-
-          {!collection.includes(pokemon.id) && !team.includes(pokemon.id) && !stateCollection && (
-            <button onClick={() => {agregarPokemon(pokemon.id); eliminarFavorito(pokemon.id);window.location.reload()}}>
-              Agregar a la colección
-            </button>
-          )}
-
-          {collection.includes(pokemon.id) && !favorites.includes(pokemon.id) && !stateFavorites && (
-            <button onClick={() => {agregarFavorito(pokemon.id); eliminarPokemon(pokemon.id);window.location.reload()}}>
-              Agregar a Favoritos
-            </button>
-          )}
-
-          {(collection.includes(pokemon.id) || favorites.includes(pokemon.id)) && !team.includes(pokemon.id)&&(
-            <button onClick={()=>{ agregarAlEquipo(pokemon.id)}}>
-              Agregar al Equipo
-            </button>
-          )}
-
-          {team.includes(pokemon.id) &&(
-            <button onClick={()=>{ eliminarDelEquipo(pokemon.id)}}>
-              Quitar del Equipo
-            </button>
-          )}
-
-          {collection.includes(pokemon.id) && !favorites.includes(pokemon.id) && (
-            <button onClick={()=>{eliminarPokemon(pokemon.id);sumarPoints(1);window.location.reload()}}>Liberar por Puntos</button>
-          )}
-        </div>
+        <SinglePokeCard
+          pokemon={pokemon}
+          collection={collection}
+          favorites={favorites}
+          team={team}
+          limitCollectionSelect={limitCollectionSelect}
+          selectedCount={selectedCount}
+          openPacks={openPacks}
+          agregarPokemon={agregarPokemon}
+          eliminarPokemon={eliminarPokemon}
+          agregarFavorito={agregarFavorito}
+          eliminarFavorito={eliminarFavorito}
+          agregarAlEquipo={agregarAlEquipo}
+          eliminarDelEquipo={eliminarDelEquipo}
+          sumarPoints={sumarPoints}
+          incrementSelected={incrementSelected}
+        />
       ))}
     </>
   );
