@@ -2,7 +2,7 @@ import React from 'react';
 import { tipoColores, } from '../../utils/pokeTipos';
 import './pokeCard.css'
 
-export default function CartaPokemon({pkmn,onAction,deck=[],favoritos=[],team=[]}) {
+export default function CartaPokemon({pkmn,onAction,deck=[],favoritos=[],team=[],hideBtn=false}) {
 
   if (!pkmn) {
     return <p style={{font:'caption'}}>Cargando...</p>;
@@ -34,35 +34,36 @@ export default function CartaPokemon({pkmn,onAction,deck=[],favoritos=[],team=[]
           </li>
         ))}
       </ul>
-
-      <div style={{display:'flex',margin:'auto',flexDirection:'column',width:'150px',gap:'5px'}}>
-        {!favoritos.some(Fav => Fav.id === id) ? (
-          <button style={{backgroundColor:'gold',color:'white',padding:'5px',border:'none',borderRadius:'15px',fontSize:'15px',fontWeight:'bold',fontFamily:'sans-serif'}}
-          onClick={()=>onAction('añadirFavoritos',pkmn)}>Agregar a Favoritos</button>
-        ):(
-          <button style={{backgroundColor:'gold',color:'white',padding:'5px',border:'none',borderRadius:'15px',fontSize:'15px',fontWeight:'bold',fontFamily:'sans-serif'}}
-          onClick={()=>onAction('borrarFavoritos',id)}>Quitar de Favoritos</button>
-        )}
-        {!team.some(team => team.id === id) ? (
-          <button style={{backgroundColor:'blue',color:'white',padding:'5px',border:'none',borderRadius:'15px',fontSize:'15px',fontWeight:'bold',fontFamily:'sans-serif'}}
-          onClick={()=>onAction('añadirTeam',pkmn)}>Agregar a Equipo</button>
-        ):(
-          <button style={{backgroundColor:'blue',color:'white',padding:'5px',border:'none',borderRadius:'15px',fontSize:'15px',fontWeight:'bold',fontFamily:'sans-serif'}}
-          onClick={()=>onAction('borrarTeam',id)}>Quitar de Equipo</button>
-        )}
-        {!favoritos.some(Fav => Fav.id === id) && (
-          <button style={{backgroundColor:'red ',color:'white',padding:'5px',border:'none',borderRadius:'15px',fontSize:'15px',fontWeight:'bold',fontFamily:'sans-serif'}}
-          onClick={()=>onAction('borrar',id)}>Eliminar</button>
-        )}
-        {favoritos.some(fav => fav.id === id) && (
-            <>
-              <button onClick={() => onAction('cambiarNombrePersonalizado', pkmn)}className="renombrar">Renombrar</button>
-              {nombrePropio && (
-                <button onClick={() => onAction('quitarNombrePersonalizado', id)} className="borrarNombre">Quitar Nombre Personalizado</button>
-              )}
-            </>
+      {!hideBtn && (
+        <div style={{display:'flex',margin:'auto',flexDirection:'column',width:'150px',gap:'5px'}}>
+          {!favoritos.some(Fav => Fav.id === id) ? (
+            <button style={{backgroundColor:'gold',color:'white',padding:'5px',border:'none',borderRadius:'15px',fontSize:'15px',fontWeight:'bold',fontFamily:'sans-serif'}}
+            onClick={()=>onAction('añadirFavoritos',pkmn)}>Agregar a Favoritos</button>
+          ):(
+            <button style={{backgroundColor:'gold',color:'white',padding:'5px',border:'none',borderRadius:'15px',fontSize:'15px',fontWeight:'bold',fontFamily:'sans-serif'}}
+            onClick={()=>onAction('borrarFavoritos',id)}>Quitar de Favoritos</button>
           )}
-      </div>
+          {!team.some(team => team.id === id) ? (
+            <button style={{backgroundColor:'blue',color:'white',padding:'5px',border:'none',borderRadius:'15px',fontSize:'15px',fontWeight:'bold',fontFamily:'sans-serif'}}
+            onClick={()=>onAction('añadirTeam',pkmn)}>Agregar a Equipo</button>
+          ):(
+            <button style={{backgroundColor:'blue',color:'white',padding:'5px',border:'none',borderRadius:'15px',fontSize:'15px',fontWeight:'bold',fontFamily:'sans-serif'}}
+            onClick={()=>onAction('borrarTeam',id)}>Quitar de Equipo</button>
+          )}
+          {!favoritos.some(Fav => Fav.id === id) && (
+            <button style={{backgroundColor:'red ',color:'white',padding:'5px',border:'none',borderRadius:'15px',fontSize:'15px',fontWeight:'bold',fontFamily:'sans-serif'}}
+            onClick={()=>onAction('borrar',id)}>Eliminar</button>
+          )}
+          {favoritos.some(fav => fav.id === id) && (
+            <>
+                <button onClick={() => onAction('cambiarNombrePersonalizado', pkmn)}className="renombrar">Renombrar</button>
+                {nombrePropio && (
+                  <button onClick={() => onAction('quitarNombrePersonalizado', id)} className="borrarNombre">Quitar Nombre Personalizado</button>
+                )}
+              </>
+            )}
+        </div>
+      )}
 
     </div>
     </>

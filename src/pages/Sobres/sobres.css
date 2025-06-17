@@ -42,3 +42,24 @@
     border: none;
     font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
+
+
+.cartasContainer{
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+    padding: 10px;
+}
+
+.btnSelect{
+    display: block;
+    margin: auto;
+    justify-content: center;
+    padding: 10px;
+    border-radius: 10px;
+    border: 2px solid;
+}
+
+.btnSelect:hover{
+    background-color: #f23;
+}

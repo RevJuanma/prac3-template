@@ -11,7 +11,7 @@ function TeamScreen() {
             <p>Aquí verás tu equipo de 6 Pokémon.</p>
             <div>
                 {equipo.length === 0 ? (
-                    <p>Aún no tienes Pokémon en tu equipo. ¡Añade algunos desde el Mazo o Favoritos!</p>
+                    <p>Aún no tienes Pokémon en tu equipo.</p>
                 ) : (
                     equipo.map((pokemon) => (
                         <CartaPokemon 

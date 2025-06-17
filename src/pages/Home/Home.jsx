@@ -19,7 +19,7 @@ function HomeScreen() {
             </p>
             <div>
                 {cartas.length === 0 ? (
-                    <p>Tu mazo está vacío. ¡Abre sobres para conseguir cartas!</p>
+                    <p>Tu mazo está vacío.</p>
                 ) : (
                     cartas.map(pokemonData => (
                         <CartaPokemon

@@ -11,13 +11,13 @@ function FavoritesScreen() {
             <p className="favorites-subtitle">Tus cartas favoritas ({favoritos.length}/10).</p>
             <div className="card-list-container">
                 {favoritos.length === 0 ? (
-                    <p className="empty-favorites-message">Aún no tienes cartas favoritas. ¡Añade algunas desde el Mazo!</p>
+                    <p className="empty-favorites-message">Aún no tienes cartas favoritas.</p>
                 ) : (
                     favoritos.map(pokemon => (
                         <CartaPokemon
                             key={pokemon.id}
                             pkmn={pokemon}
-                            onAction={accionCarta} // Usa la acción global
+                            onAction={accionCarta} 
                             deck={cartas} 
                             favoritos={favoritos} 
                             team={equipo} 

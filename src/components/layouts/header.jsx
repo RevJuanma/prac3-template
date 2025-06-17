@@ -68,7 +68,7 @@ const pkmnHeader = () => {
                         puntosDescarte += 2;
                     }
                 });
-                if (puntosDescartar > 0){
+                if (puntosDescarte > 0){
                     setPuntos(points => points + puntosDescarte);
                 }
                 return mazoCartas;
