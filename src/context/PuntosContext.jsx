@@ -1,10 +1,9 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 const PuntosContext = createContext();
 
 export function PuntosProvider({ children }) {
   const [puntos, setPuntos] = useState(() => {
-    // Leer puntos guardados o empezar en 0
     const puntosGuardados = localStorage.getItem("puntos");
     return puntosGuardados ? Number(puntosGuardados) : 0;
   });

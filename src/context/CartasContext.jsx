@@ -5,13 +5,11 @@ const CartasContext = createContext();
 export const CartasProvider = ({ children }) => {
   const [cartas, setCartas] = useState([]);
 
-  // Al cargar, leo cartas de localStorage
   useEffect(() => {
     const cartasGuardadas = JSON.parse(localStorage.getItem("cartasPoseidas") || "[]");
     setCartas(cartasGuardadas);
   }, []);
 
-  // Función para eliminar cartas (opcional)
   const eliminarCarta = (id) => {
     setCartas((prev) => {
       const filtradas = prev.filter((c) => c.id !== id);
@@ -27,7 +25,6 @@ export const CartasProvider = ({ children }) => {
   );
 };
 
-// Hook personalizado para consumir el contexto fácilmente
 export const useCartas = () => {
   return useContext(CartasContext);
 };
