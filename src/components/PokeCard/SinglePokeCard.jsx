@@ -108,11 +108,17 @@ const SinglePokeCard = ({
   // ----------------------------------
   return (
     <div className="poke-card" key={pokemon.id}>
-      <h2>{nombreAMostrar.toUpperCase()}</h2>
-      <img src={pokemon.sprites.front_default} alt={pokemon.name} />
-      <p>Altura: {pokemon.height}</p>
-      <p>Peso: {pokemon.weight}</p>
-      <p>Tipo(s): {pokemon.types.map((t) => t.type.name).join(", ")}</p>
+    <h2>{nombreAMostrar.toUpperCase()}</h2>
+    <h2>Numero: {pokemon.id}</h2>
+    <img src={pokemon.sprites.front_default} alt={pokemon.name} />
+    <p>Tipo(s): {pokemon.types.map((t) => t.type.name).join(", ")}</p>
+    <ul>
+      {pokemon.stats.map((stat) => (
+        <li key={stat.stat.name}>
+          {stat.stat.name}: {stat.base_stat}
+        </li>
+      ))}
+    </ul>
 
       {/* ----------- Colección ----------- */}
       {openPacks ? (
