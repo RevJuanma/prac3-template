@@ -1,0 +1,18 @@
+.teamPage {
+    width: 100%;
+    text-align: center;
+    padding: 0 10px;
+}
+
+.teamPage h2 {
+    margin-bottom: 30px;
+    color: #2c3e50;
+    font-size: 2em;
+}
+
+.emptyTeamMessage {
+    margin-top: 50px;
+    font-size: 1.3em;
+    color: #777;
+    font-style: italic;
+}

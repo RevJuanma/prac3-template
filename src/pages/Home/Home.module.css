@@ -1,0 +1,45 @@
+.homePage {
+    width: 100%;
+    text-align: center;
+    padding: 0 10px;
+}
+
+.homePage h2 {
+    margin-bottom: 30px;
+    color: #2c3e50;
+    font-size: 2em;
+}
+
+.emptyDeckMessage {
+    margin-top: 50px;
+    font-size: 1.3em;
+    color: #777;
+    font-style: italic;
+}
+
+.paginationControls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.paginationControls button {
+    padding: 8px 15px;
+    font-size: 1em;
+    background-color: #6c757d;
+}
+.paginationControls button:hover {
+    background-color: #5a6268;
+}
+.paginationControls button:disabled {
+    opacity: 0.5;
+}
+
+.paginationControls span {
+    font-size: 1.1em;
+    font-weight: 500;
+    color: #333;
+}
