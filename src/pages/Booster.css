@@ -1,0 +1,68 @@
+.booster-container {
+  width: 100%;
+  max-width: 1200px;
+  padding: 20px;
+  text-align: center;
+}
+
+.booster-container h1 {
+  color: #61dafb;
+  margin-bottom: 20px;
+}
+
+.booster-options {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 30px;
+}
+
+.booster-pack {
+  background-color: #3a3f47;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 300px;
+}
+
+.booster-pack h2 {
+  color: #61dafb;
+  margin-top: 0;
+}
+
+.booster-pack p {
+  margin-bottom: 15px;
+}
+
+.revealed-cards-section {
+  margin-top: 40px;
+  border-top: 2px solid #61dafb;
+  padding-top: 20px;
+}
+
+.revealed-cards-section h2 {
+  color: #61dafb;
+  margin-bottom: 20px;
+}
+
+.revealed-card-wrapper {
+  position: relative;
+  border: 2px solid transparent;
+  transition: border-color 0.3s ease;
+}
+
+.revealed-card-wrapper .select-card-button {
+  margin-top: 10px;
+  width: 80%;
+}
+
+.revealed-card-wrapper:has(.select-card-button:not([disabled])):hover {
+  border-color: #61dafb;
+}
+
+.selection-complete-message {
+  margin-top: 20px;
+  font-size: 1.2em;
+  color: #4CAF50;
+  font-weight: bold;
+}

@@ -1,0 +1,11 @@
+.favorites-container {
+  width: 100%;
+  max-width: 1200px;
+  padding: 20px;
+  text-align: center;
+}
+
+.favorites-container h1 {
+  color: #61dafb;
+  margin-bottom: 20px;
+}
