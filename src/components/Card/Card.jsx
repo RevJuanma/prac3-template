@@ -1,17 +1,27 @@
+import React, { useState } from "react";
 import { usePokemon } from "../../hooks/UsePokemon";
-import "./Card.css";     
+import "./Card.css";
 import { typeColors } from "./Types";
 import { useFavorites } from "../../context/FavoritesContext";
-import { FaHeart, FaRegHeart } from "react-icons/fa";
-import { FaEllipsisV } from "react-icons/fa";
-import React, { useState } from "react";
+import { FaHeart, FaRegHeart, FaEllipsisV } from "react-icons/fa";
 import { useDeck } from "../../context/DeckContext";
-import { LIMITE_FAVORITOS,AÑADIO_FAVORITOS,QUITAR_FAVORITOS } from "../../constans/alerts";
+import {
+  LIMITE_FAVORITOS,
+  AÑADIO_FAVORITOS,
+  QUITAR_FAVORITOS,
+} from "../../constans/alerts";
 import { toast } from "react-toastify";
 
+// 1. Definición del componente y props (id y acciones opcionales)
 export default function PokemonCard({ id, actions = [] }) {
   const { data, loading, error } = usePokemon(id);
-  const { isFavorite, toggleFavorite, isFilledFavorites, setCustomName, customNames } = useFavorites();
+  const {
+    isFavorite,
+    toggleFavorite,
+    isFilledFavorites,
+    setCustomName,
+    customNames,
+  } = useFavorites();
   const [open, setOpen] = useState(false);
   const hasActions = actions.length > 0;
   const { isInDeck } = useDeck();
@@ -20,32 +30,36 @@ export default function PokemonCard({ id, actions = [] }) {
   if (error) return <p className="pokemon-card__error">{error}</p>;
   if (!data) return null;
 
+  // 4. Preparar estilos dinámicos según tipo(s) de Pokémon
   const type1 = data.types[0].type.name;
   const type2 = data.types[1]?.type.name;
-
   const color1 = typeColors[type1] || "#FFF";
   const color2 = type2 ? typeColors[type2] || "#FFF" : null;
-
   const backgroundStyle = {
     background: color2
       ? `linear-gradient(135deg, ${color1}, ${color2})`
       : color1,
   };
 
+  // 5. Renderizado principal de la tarjeta con flujo condicional
   return (
     <div className="pokemon-card" style={backgroundStyle}>
-      {/* Icono de Favoritos */}
+      {/* 5.1 Icono de favorito, solo si está en mazo */}
       {isInDeck(id) && (
         <button
           onClick={() => {
+            // 5.1.1 Validar límite antes de toggle
             if (isFilledFavorites() && !isFavorite(id)) {
-              toast.warn (LIMITE_FAVORITOS);
-            } else{
+              toast.warn(LIMITE_FAVORITOS);
+            } else {
+              // 5.1.2 Reset custom name y toggle con notificación
               setCustomName(id, undefined);
-              isFavorite(id) ? toast.info(QUITAR_FAVORITOS) : toast.success(AÑADIO_FAVORITOS); // Importa las etiquetas aca
-              toggleFavorite(id)};
+              isFavorite(id)
+                ? toast.info(QUITAR_FAVORITOS)
+                : toast.success(AÑADIO_FAVORITOS);
+              toggleFavorite(id);
             }
-          }
+          }}
           aria-label={
             isFavorite(id) ? "Quitar de favoritos" : "Añadir a favoritos"
           }
@@ -115,6 +129,7 @@ export default function PokemonCard({ id, actions = [] }) {
         </ul>
       )}
 
+      {/* 5.4 Datos principales: nombre, número, imagen y tipos */}
       <h2 className="pokemon-card__name">{customNames[id] || data.name}</h2>
       <p>
         <strong>N°:</strong> {data.id}
@@ -128,6 +143,8 @@ export default function PokemonCard({ id, actions = [] }) {
       <p>
         <strong>Tipos:</strong> {data.types.map((t) => t.type.name).join(", ")}
       </p>
+
+      {/* 5.5 Estadísticas en lista */}
       <div>
         <strong>Estadísticas:</strong>
         <ul className="pokemon-card__stats">

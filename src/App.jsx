@@ -10,14 +10,15 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { TeamProvider } from "./context/TeamContext";
 import { PointsProvider } from "./context/PointsContext";
-import { PointsDisplay } from "./components/PointsDisplay/PointsDisplay"
+import { PointsDisplay } from "./components/PointsDisplay/PointsDisplay";
 import MyTeam from "./components/MyTeam/MyTeam";
 import CountPokemonDisplay from "./components/CountPokemonDisplay/CountPokemonDisplay";
 
+// 1. Componente raíz de la aplicación
 export default function App() {
   return (
     <React.Fragment>
-      {/* ToastContainer debe estar en el root, sin envolver children */}
+      {/* 2. Contenedor de notificaciones globales, debe estar en el root */}
       <ToastContainer
         position="top-right"
         autoClose={3000}
@@ -26,13 +27,21 @@ export default function App() {
         closeOnClick
         pauseOnHover
       />
+
+      {/* 3. Proveedores de contexto para puntos y visualización */}
       <PointsProvider>
-        <PointsDisplay/>
+        <PointsDisplay />
+
+        {/* 4. Contexto para favoritos -> Team -> Deck, asegura orden correcto */}
         <FavoritesProvider>
           <TeamProvider>
             <DeckProvider>
+              {/* 5. Muestra conteos de items en mazo, equipo y favoritos */}
               <CountPokemonDisplay />
+
+              {/* 6. Configuración de enrutamiento */}
               <BrowserRouter>
+                {/* 6.1 Barra de navegación con enlaces a rutas */}
                 <nav>
                   <NavLink to="/" end>
                     Inicio
@@ -41,6 +50,8 @@ export default function App() {
                   <NavLink to="/mi-equipo">Mi Equipo</NavLink> |
                   <NavLink to="/favoritos">Favoritos</NavLink>
                 </nav>
+
+                {/* 6.2 Definición de rutas y componentes asociados */}
                 <Routes>
                   <Route path="/" element={<Deck />} />
                   <Route path="/abrir-sobre" element={<BoosterSelector />} />

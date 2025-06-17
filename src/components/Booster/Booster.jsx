@@ -2,7 +2,6 @@ import React, { useMemo, useState } from "react";
 import PokemonCard from "../Card/Card";
 import { useDeck } from "../../context/DeckContext";
 import { toast } from "react-toastify";
-import { useFavorites } from "../../context/FavoritesContext";
 import {
   LIMITE_DE_MAZO,
   AÑADIO_PUNTOS_MULTIPLES,
@@ -12,73 +11,74 @@ import {
 import { FaPlus } from "react-icons/fa";
 import { usePoints } from "../../context/PointsContext";
 
+// 1. Definición del componente y props entrantes
 export default function PokemonBooster({
   name,
   count = 6,
   maxSelection = 1,
   onClose,
 }) {
+  // 2. Contextos globales: mazo y puntos
   const { toggleDeck, isInDeck, isFilled, availableSlots } = useDeck();
-  const { isFavorite } = useFavorites();
-  const [selected, setSelected] = useState([]);
-    const [maxSelectionReached, setMaxSelectionReached] = useState(false);
   const { incrementPoints } = usePoints();
 
-  // Genera IDs aleatorios para el booster
-  const pokemonIds = useMemo(
-    () =>
-      Array.from({ length: 151 }, (_, i) => i + 1)
-        .sort(() => Math.random() - 0.5)
-        .slice(0, count),
-    [count]
-  );
+  // 3. Estados locales: lista de seleccionados + bandera de límite alcanzado
+  const [selected, setSelected] = useState([]);
+  const [maxSelectionReached, setMaxSelectionReached] = useState(false);
 
-  // Maneja selección local
+  // 4. Generación inicial de IDs aleatorios, recalcula solo cuando cambia "count"
+  const pokemonIds = useMemo(() => {
+    return Array.from({ length: 151 }, (_, i) => i + 1)
+      .sort(() => Math.random() - 0.5)
+      .slice(0, count);
+  }, [count]);
+
+  // 5. Función para alternar selección de un Pokémon
   const toggleSelected = (id) => {
     setSelected((prev) => {
-      // Si ya estaba seleccionado, lo quitamos
       if (prev.includes(id)) {
+        // Quitar si ya estaba
         setMaxSelectionReached(false);
         return prev.filter((i) => i !== id);
       }
-      // Si no, solo agregamos si no excede el máximo
       if (prev.length < maxSelection) {
+        // Agregar si hay espacio
         setMaxSelectionReached(false);
         return [...prev, id];
       }
-      if (prev.length >= maxSelection) {
-        setMaxSelectionReached(true);
-        return prev; // no hacemos nada si ya alcanzó el máximo
-      }
+      // Marcar si intentan superar el límite
+      setMaxSelectionReached(true);
+      return prev;
     });
   };
 
+  // 6. Función principal: procesar y mover seleccionados al mazo
   const addSelectedToDeck = () => {
+    // 6.1 Validación de selección mínima
     if (selected.length < maxSelection) {
       toast.warn(SELECT_POKEMON_REQUIRED(maxSelection));
       return;
     }
 
-    // Chequeo inicial de si el mazo ya estaba lleno
+    // 6.2 Guardar estado inicial del mazo y contadores
     const initiallyFull = isFilled();
-    // Contador local de cuántos acabo de añadir
     let addedCount = 0;
     let pointExchangeCount = 0;
 
-    // Procesa cada seleccionado, pero sin toasts de puntos repetidos
+    // 6.3 Iterar cada id seleccionado
     selected.forEach((id) => {
       if (initiallyFull || addedCount >= availableSlots() || isInDeck(id)) {
-        // Marca para canje de puntos
+        // Cuenta para intercambio si no cabe o ya existe
         pointExchangeCount++;
       } else {
-        // Primer Pokémon que entra al mazo
+        // Agregar al mazo y notificar
         toggleDeck(id);
         toast.success(`¡Pokémon #${id} agregado al mazo!`);
-        addedCount += 1;
+        addedCount++;
       }
     });
 
-    // Si hubo canjes de puntos, una sola alerta global
+    // 6.4 Si hubo intercambios, recompensar puntos y notificar una sola vez
     if (pointExchangeCount > 0) {
       incrementPoints(pointExchangeCount);
       toast.warn(LIMITE_DE_MAZO);
@@ -87,14 +87,17 @@ export default function PokemonBooster({
         : toast.info(AÑADIO_PUNTOS_MULTIPLES(pointExchangeCount));
     }
 
+    // 6.5 Limpieza: reset y cierre de overlay
     setSelected([]);
     onClose();
   };
 
+  // 7. Render: paso a paso del flujo de UI
   return (
     <div>
       <h1>Sobre {name} de Pokémon</h1>
       <div className="pokemon-row">
+        {/* 7.1 Mostrar cada carta y botón de selección */}
         {pokemonIds.map((id) => (
           <div
             key={id}
@@ -112,6 +115,7 @@ export default function PokemonBooster({
               onClick={() => {
                 toggleSelected(id);
                 if (maxSelectionReached && !selected.includes(id)) {
+                  // Aviso inmediato si se supera el límite
                   toast.warn(
                     `Solo puedes seleccionar ${maxSelection} Pokémon en el sobre ${name}`
                   );
@@ -134,6 +138,7 @@ export default function PokemonBooster({
 
       {selected.length > 0 && (
         <div style={{ marginTop: "1.5rem", textAlign: "center" }}>
+          {/* 7.2 Botón para confirmar y agregar todos seleccionados */}
           <button
             onClick={addSelectedToDeck}
             style={{
