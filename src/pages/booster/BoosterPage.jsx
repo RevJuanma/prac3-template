@@ -1,7 +1,7 @@
 import React from "react";
 import useDeck from "../../hooks/useDeck";
 import useBooster from "../../hooks/useBooster";
-import BoosterCardSelection from "../../components/boosterCards/BoosterCards.jsx";
+import BoosterCards from "../../components/boosterCards/BoosterCards.jsx";
 import "../../Styles/boosterStyle.css";
 
 function BoosterPage() {
@@ -58,7 +58,7 @@ function BoosterPage() {
                     </div>
                 </div>
             ) : (
-                <BoosterCardSelection
+                <BoosterCards
                     pokemonIds={boosterPokemonIds}
                     cardsToPick={cardsToSelect}
                     onSelectionDone={handleCardsSelected}
