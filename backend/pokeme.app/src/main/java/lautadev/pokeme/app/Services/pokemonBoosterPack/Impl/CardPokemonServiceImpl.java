@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lautadev.pokeme.app.DTO.request.boosterPack.PokemonSelectionRequest;
+import lautadev.pokeme.app.DTO.request.boosterPack.RenamePokemonRequest;
 import lautadev.pokeme.app.DTO.response.boosterPackPokemon.ShowCardPokemonResponse;
 import lautadev.pokeme.app.DTO.response.boosterPackPokemon.StatsPokemonDTO;
 import lautadev.pokeme.app.Entities.*;
@@ -42,6 +43,7 @@ public class CardPokemonServiceImpl implements CardPokemonService {
     private final PokemonCacheService pokemonCacheService;
     private final BoosterPackCacheService boosterPackCacheService;
     private final UserService userService;
+    private final PokemonApiClient pokemonApiClient;
 
     @Override
     @Transactional
@@ -143,6 +145,50 @@ public class CardPokemonServiceImpl implements CardPokemonService {
         Inventory inventory = user.getInventory();
         inventory.setSlotUsed(inventory.getSlotUsed() - 1);
         inventoryRepository.save(inventory);
+    }
+
+    @Override
+    @Transactional
+    public ShowCardPokemonResponse renamePokemon(RenamePokemonRequest renamePokemonRequest) {
+        User user = getUserLoggedSecurityContext();
+
+        CardPokemon cardPokemon = cardPokemonRepository.findByIdAndUserIdAndIsPresentFavoriteTrue(renamePokemonRequest.cardPokemonId(), user.getId())
+                .orElseThrow(CardPokemonNotFoundException::new);
+
+        String newName = renamePokemonRequest.newName();
+        if (newName == null || newName.trim().isEmpty()) {
+            newName = pokemonApiClient.getOriginalNameFromPokeApi(renamePokemonRequest.pokemonId());
+        }
+
+        cardPokemon.setName(newName);
+        cardPokemonRepository.save(cardPokemon);
+
+        return mapToShowCardPokemonResponse(cardPokemon);
+    }
+
+
+    private ShowCardPokemonResponse mapToShowCardPokemonResponse(CardPokemon card) {
+        ShowCardPokemonResponse dto = new ShowCardPokemonResponse();
+        dto.setId(card.getId());
+        dto.setIdPokemon(card.getIdPokemon());
+        dto.setValue(card.getValue());
+        dto.setName(card.getName());
+        dto.setFavorite(card.isPresentFavorite());
+        dto.setUrlImage(card.getUrlImage());
+
+        Set<StatsPokemonDTO> statsDtos = card.getStats().stream()
+                .map(stat -> {
+                    StatsPokemonDTO statDto = new StatsPokemonDTO();
+                    statDto.setName(stat.getName());
+                    statDto.setBaseStat(stat.getBaseStat());
+                    statDto.setEffort(stat.getEffort());
+                    statDto.setUrl(stat.getUrl());
+                    return statDto;
+                })
+                .collect(Collectors.toSet());
+
+        dto.setStats(statsDtos);
+        return dto;
     }
 
     private List<Integer> chooseRandom(List<Integer> list, int count) {

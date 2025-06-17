@@ -1,6 +1,7 @@
 package lautadev.pokeme.app.Services.pokemonBoosterPack;
 
 import lautadev.pokeme.app.DTO.request.boosterPack.PokemonSelectionRequest;
+import lautadev.pokeme.app.DTO.request.boosterPack.RenamePokemonRequest;
 import lautadev.pokeme.app.DTO.response.boosterPackPokemon.ShowCardPokemonResponse;
 import lautadev.pokeme.app.Entities.enums.Quality;
 
@@ -10,4 +11,5 @@ public interface CardPokemonService {
     void saveSelectedPokemon(PokemonSelectionRequest pokemonSelectionRequest);
     List<ShowCardPokemonResponse> loadPokemonByQualityPack(Quality quality);
     void sellCardPokemon(Long pokemonId);
+    ShowCardPokemonResponse renamePokemon(RenamePokemonRequest renamePokemonRequest);
 }

@@ -27,6 +27,7 @@ public class FavoriteServiceImpl implements FavoriteService {
 
     private final FavoriteRepository favoriteRepository;
     private final CardPokemonRepository cardPokemonRepository;
+    private final PokemonApiClient pokemonApiClient;
 
     @Override
     @Transactional
@@ -71,6 +72,9 @@ public class FavoriteServiceImpl implements FavoriteService {
         boolean isPokemonPresent = favoriteRepository.existsCardInFavorite(favorite.getId(), cardPokemon.getId());
 
         if (isPokemonPresent) {
+            String originalName = pokemonApiClient.getOriginalNameFromPokeApi(cardPokemon.getIdPokemon());
+            cardPokemon.setName(originalName);
+
             favorite.getPokemons().removeIf(p -> p.getId().equals(cardPokemon.getId()));
             cardPokemon.setFavorite(null);
             cardPokemon.setPresentFavorite(false);
