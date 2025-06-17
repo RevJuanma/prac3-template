@@ -40,7 +40,6 @@ const useDeck = () => {
 
     const quitarCartaDelMazo = (pokemonId) => {
         setMazo(prevMazo => prevMazo.filter(card => card.id !== pokemonId));
-        console.log("Carta eliminada del mazo. No se reciben puntos.");
     };
 
     const restarPuntos = (cantidad) => {
