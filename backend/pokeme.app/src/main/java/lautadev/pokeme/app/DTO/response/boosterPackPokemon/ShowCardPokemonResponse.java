@@ -25,13 +25,19 @@ public class ShowCardPokemonResponse {
 
     private String urlImage;
 
+    private boolean isFavorite;
+
     private Set<StatsPokemonDTO> stats = new HashSet<>();
 
-    public ShowCardPokemonResponse(long id, BigDecimal value, String name, String urlImage, Set<StatsPokemonDTO> stats) {
+    public ShowCardPokemonResponse(long id, BigDecimal value, String name, String urlImage, boolean isFavorite ,Set<StatsPokemonDTO> stats) {
         this.idPokemon = id;
         this.value = value;
         this.name = name;
         this.urlImage = urlImage;
+        this.isFavorite =  isFavorite;
         this.stats = stats;
+    }
+
+    public ShowCardPokemonResponse(long l, BigDecimal bigDecimal, String name, String urlImage, Set<StatsPokemonDTO> stats) {
     }
 }

@@ -49,7 +49,7 @@ public class CardPokemon {
     private Favorite favorite;
 
     @Column(nullable = false)
-    private boolean isFavorite;
+    private boolean isPresentFavorite;
 
     @Column(nullable = false)
     private boolean isDeleted;

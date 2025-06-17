@@ -73,12 +73,14 @@ public class FavoriteServiceImpl implements FavoriteService {
         if (isPokemonPresent) {
             favorite.getPokemons().removeIf(p -> p.getId().equals(cardPokemon.getId()));
             cardPokemon.setFavorite(null);
+            cardPokemon.setPresentFavorite(false);
             favorite.setSlotUsed(favorite.getSlotUsed() - 1);
         } else {
             validateSlotInFavoriteList(favorite.getId());
 
             cardPokemon.setFavorite(favorite);
             favorite.getPokemons().add(cardPokemon);
+            cardPokemon.setPresentFavorite(true);
             favorite.setSlotUsed(favorite.getSlotUsed() + 1);
         }
     }
@@ -89,6 +91,7 @@ public class FavoriteServiceImpl implements FavoriteService {
         dto.setIdPokemon(card.getIdPokemon());
         dto.setValue(card.getValue());
         dto.setName(card.getName());
+        dto.setFavorite(card.isPresentFavorite());
         dto.setUrlImage(card.getUrlImage());
 
         Set<StatsPokemonDTO> statsDtos = card.getStats().stream()

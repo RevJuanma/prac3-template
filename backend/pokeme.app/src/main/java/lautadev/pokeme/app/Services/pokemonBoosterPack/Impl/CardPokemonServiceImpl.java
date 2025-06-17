@@ -84,7 +84,7 @@ public class CardPokemonServiceImpl implements CardPokemonService {
                 .value(showCard.getValue())
                 .name(showCard.getName())
                 .urlImage(showCard.getUrlImage())
-                .isFavorite(false)
+                .isPresentFavorite(false)
                 .isDeleted(false)
                 .build();
 
