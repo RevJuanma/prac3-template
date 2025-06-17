@@ -32,10 +32,11 @@ public class TeamPokemonServiceImpl implements TeamPokemonService {
     @Override
     @Transactional
     public void addPokemonToTeam(Long pokemonId) {
-        CardPokemon cardPokemon = cardPokemonRepository.findByIdAndIsDeletedFalse(pokemonId)
+        User user = getUserLoggedSecurityContext();
+
+        CardPokemon cardPokemon = cardPokemonRepository.findByIdAndUserIdAndIsDeletedFalse(pokemonId, user.getId())
                 .orElseThrow(CardPokemonNotFoundException::new);
 
-        User user = getUserLoggedSecurityContext();
 
         TeamPokemon teamPokemon = teamPokemonRepository.findById(user.getTeamPokemon().getId())
                 .orElseThrow(ResourceNotFoundException::new);

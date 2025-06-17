@@ -16,6 +16,8 @@ public interface CardPokemonRepository extends JpaRepository<CardPokemon,Long> {
     Page<CardPokemon> findByInventoryIdAndIsDeletedFalse(Long inventoryId, Pageable pageable);
     @Query("SELECT COALESCE(SUM(c.value), 0) FROM CardPokemon c WHERE c.inventory.id = :inventoryId AND c.isDeleted = false")
     BigDecimal sumValueByInventoryId(@Param("inventoryId") Long inventoryId);
-    Optional<CardPokemon> findByIdAndIsDeletedFalse(Long id);
+    @Query("SELECT cp FROM CardPokemon cp WHERE cp.id = :id AND cp.isDeleted = false AND cp.inventory.user.id = :userId")
+    Optional<CardPokemon> findByIdAndUserIdAndIsDeletedFalse(@Param("id") Long id, @Param("userId") Long userId);
+
 
 }
