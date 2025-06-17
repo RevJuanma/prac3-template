@@ -1,3 +1,6 @@
+// ==================================
+// ============ Imports =============
+// ==================================
 import React, { useState } from "react";
 import {
   useHasReachedCollectionLimit,
@@ -6,6 +9,9 @@ import {
 } from "../../hooks/useLimits";
 import useLocalStorage from "../../hooks/useLocalStorage";
 
+// ==================================
+// ======= Componente Tarjeta =======
+// ==================================
 const SinglePokeCard = ({
   pokemon,
   collection,
@@ -23,41 +29,40 @@ const SinglePokeCard = ({
   sumarPoints,
   incrementSelected,
 }) => {
-  /* ---------- LÍMITES ---------- */
+  // ----------------------------------
+  // --------- Estados & Límites ------
+  // ----------------------------------
   const stateCollection = useHasReachedCollectionLimit();
   const stateFavorites  = useHasReachedFavoritesLimit();
   const stateTeam       = useHasReachedTeamLimit();
-
-  /* ---------- OTROS ESTADOS ---------- */
   const [agregado, setAgregado] = useState(false);
 
-  /* ---------- NOMBRE PERSONALIZADO ---------- */
-  // Clave única por Pokémon
+  // ----------------------------------
+  // ---------- Nombre Custom ---------
+  // ----------------------------------
   const [customName, setCustomName] = useLocalStorage(
     `custom-name-${pokemon.id}`,
     pokemon.name
   );
 
-  // Nombre que realmente se va a pintar
   const nombreAMostrar =
     favorites.includes(pokemon.id) ? customName : pokemon.name;
 
-  /* ---------- HANDLERS ---------- */
+  // ----------------------------------
+  // --------- Handlers ---------------
+  // ----------------------------------
+  const HandlerAgregarAColeccion = () => {
+    agregarPokemon(pokemon.id);
+    eliminarFavorito(pokemon.id);
+    
+    const key = `custom-name-${pokemon.id}`;
+    if (localStorage.getItem(key)) {
+      localStorage.removeItem(key);
+      setCustomName(pokemon.name);
+    }
 
-const HandlerAgregarAColeccion = () => {
-  agregarPokemon(pokemon.id);       // entra a colección
-  eliminarFavorito(pokemon.id);     // sale de favoritos
-
-  // Si existía un nombre custom, lo eliminamos
-  const key = `custom-name-${pokemon.id}`;
-  if (localStorage.getItem(key)) {
-    localStorage.removeItem(key);   // 1) limpiamos storage
-    setCustomName(pokemon.name);    // 2) mostramos nombre original
-  }
-
-  incrementSelected?.();
-};
-
+    incrementSelected?.();
+  };
 
   const HandlerEliminarPorPuntos = (points = 0) => {
     sumarPoints(points);
@@ -72,9 +77,9 @@ const HandlerAgregarAColeccion = () => {
 
   const handleResetName = () => setCustomName(pokemon.name);
 
-
-
-  /* ---------- CONDICIONES DE BOTONES ---------- */
+  // ----------------------------------
+  // --------- Condiciones Botones ----
+  // ----------------------------------
   const puedeAgregarColeccion =
     !collection.includes(pokemon.id) &&
     selectedCount <= limitCollectionSelect &&
@@ -98,7 +103,9 @@ const HandlerAgregarAColeccion = () => {
     !team.includes(pokemon.id) &&
     !openPacks;
 
-  /* ---------- RENDER ---------- */
+  // ----------------------------------
+  // --------- Render ----------------
+  // ----------------------------------
   return (
     <div className="poke-card" key={pokemon.id}>
       <h2>{nombreAMostrar.toUpperCase()}</h2>
@@ -144,14 +151,12 @@ const HandlerAgregarAColeccion = () => {
         </button>
       )}
 
-
       {favorites.includes(pokemon.id) && (
         <>
           <button onClick={handleChangeName}>Cambiar nombre</button>
           {customName !== pokemon.name && (
             <button onClick={handleResetName}>Restaurar nombre</button>
           )}
-
         </>
       )}
 
@@ -184,4 +189,7 @@ const HandlerAgregarAColeccion = () => {
   );
 };
 
+// ==================================
+// ============ Export ==============
+// ==================================
 export default SinglePokeCard;
