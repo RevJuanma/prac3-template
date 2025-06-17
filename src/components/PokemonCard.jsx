@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useGameStore } from '../utils/store';
-import './PokemonCard.css'; // We'll create this
+import './PokemonCard.css';
 
 const PokemonCard = ({ pokemon, isFavorite = false }) => {
   const {
