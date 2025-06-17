@@ -6,12 +6,12 @@ function FavoritesScreen() {
     const { favoritos, cartas, equipo, accionCarta } = useOutletContext();
 
     return (
-        <div className="favorites-container">
-            <h1 className="favorites-title">¡Mis Favoritos!</h1>
-            <p className="favorites-subtitle">Tus cartas favoritas ({favoritos.length}/10).</p>
-            <div className="card-list-container">
+        <div>
+            <h1>¡Mis Favoritos!</h1>
+            <p>Tus cartas favoritas ({favoritos.length}/10).</p>
+            <div className="cartas">
                 {favoritos.length === 0 ? (
-                    <p className="empty-favorites-message">Aún no tienes cartas favoritas.</p>
+                    <p>Aún no tienes cartas favoritas.</p>
                 ) : (
                     favoritos.map(pokemon => (
                         <CartaPokemon

@@ -1,6 +1,7 @@
 import React from "react";
 import CartaPokemon from "../../components/Carta/pokeCard";
 import { useOutletContext } from "react-router";
+import './Home.css'
 
 
 function HomeScreen() {
@@ -17,7 +18,7 @@ function HomeScreen() {
                 Equipo: <span>{equipo.length}/6</span> |
                 Mazo: <span>{cartas.length}/50</span>
             </p>
-            <div>
+            <div className="cartas">
                 {cartas.length === 0 ? (
                     <p>Tu mazo está vacío.</p>
                 ) : (
@@ -29,7 +30,7 @@ function HomeScreen() {
                             favoritos={favoritos} 
                             team={equipo} 
                             deck={cartas}
-                        />
+                            />
                     ))
                 )}
             </div>
