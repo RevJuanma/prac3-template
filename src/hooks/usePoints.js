@@ -1,7 +1,7 @@
 import useLocalStorage from "./useLocalStorage";
 
 const usePoints = () => {
-  const [points, setPoints] = useLocalStorage("Puntos", 0);
+  const [points, setPoints] = useLocalStorage("Puntos", 100);
 
   const sumarPoints = (cantidad) => {
     setPoints((prev) => prev + cantidad);
