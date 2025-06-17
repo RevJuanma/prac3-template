@@ -9,11 +9,13 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 @Repository
 public interface CardPokemonRepository extends JpaRepository<CardPokemon,Long> {
     Page<CardPokemon> findByInventoryIdAndIsDeletedFalse(Long inventoryId, Pageable pageable);
     @Query("SELECT COALESCE(SUM(c.value), 0) FROM CardPokemon c WHERE c.inventory.id = :inventoryId AND c.isDeleted = false")
     BigDecimal sumValueByInventoryId(@Param("inventoryId") Long inventoryId);
+    Optional<CardPokemon> findByIdAndIsDeletedFalse(Long id);
 
 }

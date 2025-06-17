@@ -29,6 +29,14 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleUserNotFoundException(ResourceNotFoundException ex) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("error", ex.getMessage());
+        body.put("status", HttpStatus.NOT_FOUND.value());
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(CardPokemonNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleUserNotFoundException(CardPokemonNotFoundException ex) {
         Map<String, Object> body = new HashMap<>();

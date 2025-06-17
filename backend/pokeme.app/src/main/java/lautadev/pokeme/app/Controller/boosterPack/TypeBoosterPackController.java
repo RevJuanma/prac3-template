@@ -3,7 +3,7 @@ package lautadev.pokeme.app.Controller.boosterPack;
 import jakarta.validation.Valid;
 import lautadev.pokeme.app.DTO.request.boosterPack.CreateTypeBoosterPackRequest;
 import lautadev.pokeme.app.DTO.response.GenericResponse;
-import lautadev.pokeme.app.DTO.response.boosterPack.TypeBoosterPackResponse;
+import lautadev.pokeme.app.DTO.response.boosterPackPokemon.TypeBoosterPackResponse;
 import lautadev.pokeme.app.Services.pokemonBoosterPack.TypeBoosterPackService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

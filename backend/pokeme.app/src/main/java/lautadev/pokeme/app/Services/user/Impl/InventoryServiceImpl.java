@@ -1,7 +1,7 @@
 package lautadev.pokeme.app.Services.user.Impl;
 
-import lautadev.pokeme.app.DTO.response.boosterPack.ShowCardPokemonResponse;
-import lautadev.pokeme.app.DTO.response.boosterPack.StatsPokemonDTO;
+import lautadev.pokeme.app.DTO.response.boosterPackPokemon.ShowCardPokemonResponse;
+import lautadev.pokeme.app.DTO.response.boosterPackPokemon.StatsPokemonDTO;
 import lautadev.pokeme.app.DTO.response.user.InventoryDTO;
 import lautadev.pokeme.app.Entities.CardPokemon;
 import lautadev.pokeme.app.Entities.Inventory;

@@ -5,7 +5,7 @@ import lautadev.pokeme.app.DTO.request.authentication.LoginRequest;
 import lautadev.pokeme.app.DTO.request.authentication.RefreshTokenRequest;
 import lautadev.pokeme.app.DTO.request.authentication.UserRegisterRequest;
 import lautadev.pokeme.app.DTO.response.authentication.Token;
-import lautadev.pokeme.app.Entities.Deck;
+import lautadev.pokeme.app.Entities.TeamPokemon;
 import lautadev.pokeme.app.Entities.Favorite;
 import lautadev.pokeme.app.Entities.Inventory;
 import lautadev.pokeme.app.Entities.User;
@@ -109,8 +109,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Inventory inventory = new Inventory();
         inventory.setSlotUsed(0);
 
-        Deck deck = new Deck();
-        deck.setSlotUsed(0);
+        TeamPokemon teamPokemon = new TeamPokemon();
+        teamPokemon.setSlotUsed(0);
 
         Favorite favorite = new Favorite();
         favorite.setSlotUsed(0);
@@ -122,13 +122,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .balance(BigDecimal.valueOf(10000))
                 .roles(Collections.singleton(Role.USER))
                 .inventory(inventory)
-                .deck(deck)
+                .teamPokemon(teamPokemon)
                 .favorite(favorite)
                 .isDeleted(false)
                 .build();
 
         inventory.setUser(user);
-        deck.setUser(user);
+        teamPokemon.setUser(user);
         favorite.setUser(user);
 
         user = userRepository.save(user);

@@ -12,7 +12,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Deck {
+public class TeamPokemon {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +20,7 @@ public class Deck {
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
-    @OneToMany(mappedBy = "deck", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "teamPokemon", cascade = CascadeType.ALL)
     private Set<CardPokemon> pokemons = new HashSet<>();
     private int slotUsed;
 }

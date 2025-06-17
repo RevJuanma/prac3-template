@@ -35,7 +35,7 @@ public class User implements UserDetails {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private Inventory inventory;
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private Deck deck;
+    private TeamPokemon teamPokemon;
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Favorite favorite;
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)

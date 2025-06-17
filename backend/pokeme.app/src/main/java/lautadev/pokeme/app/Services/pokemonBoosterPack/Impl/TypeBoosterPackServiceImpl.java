@@ -1,7 +1,7 @@
 package lautadev.pokeme.app.Services.pokemonBoosterPack.Impl;
 
 import lautadev.pokeme.app.DTO.request.boosterPack.CreateTypeBoosterPackRequest;
-import lautadev.pokeme.app.DTO.response.boosterPack.TypeBoosterPackResponse;
+import lautadev.pokeme.app.DTO.response.boosterPackPokemon.TypeBoosterPackResponse;
 import lautadev.pokeme.app.Entities.TypeBoosterPack;
 import lautadev.pokeme.app.Entities.enums.Quality;
 import lautadev.pokeme.app.Exceptions.ApiException;

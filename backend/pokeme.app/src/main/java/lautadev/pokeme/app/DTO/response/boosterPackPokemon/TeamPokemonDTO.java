@@ -7,11 +7,15 @@ import lombok.Setter;
 
 import java.util.List;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class BoosterPackOpenResponse {
-    private String sessionId;
-    private List<ShowCardPokemonResponse> pokemons;
+public class TeamPokemonDTO {
+
+    private Long id;
+
+    private int slotUsed;
+
+    private List<ShowCardPokemonResponse> pokemon;
 }

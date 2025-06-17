@@ -41,8 +41,8 @@ public class CardPokemon {
     private Inventory inventory;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "deck_id")
-    private Deck deck;
+    @JoinColumn(name = "team_pokemon_id")
+    private TeamPokemon teamPokemon;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "favorite_id")

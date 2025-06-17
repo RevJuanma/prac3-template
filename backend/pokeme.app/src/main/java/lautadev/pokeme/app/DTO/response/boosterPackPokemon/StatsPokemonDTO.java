@@ -1,4 +1,4 @@
-package lautadev.pokeme.app.DTO.response.boosterPack;
+package lautadev.pokeme.app.DTO.response.boosterPackPokemon;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

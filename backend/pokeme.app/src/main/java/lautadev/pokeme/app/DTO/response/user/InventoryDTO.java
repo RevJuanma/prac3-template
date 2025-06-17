@@ -1,6 +1,6 @@
 package lautadev.pokeme.app.DTO.response.user;
 
-import lautadev.pokeme.app.DTO.response.boosterPack.ShowCardPokemonResponse;
+import lautadev.pokeme.app.DTO.response.boosterPackPokemon.ShowCardPokemonResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
