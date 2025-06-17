@@ -82,8 +82,7 @@ const SinglePokeCard = ({
   // ----------------------------------
   const puedeAgregarColeccion =
     !collection.includes(pokemon.id) &&
-    selectedCount <= limitCollectionSelect &&
-    !stateCollection;
+    selectedCount <= limitCollectionSelect;
 
   const puedeAgregarFavoritos =
     collection.includes(pokemon.id) &&
