@@ -13,8 +13,5 @@ function comprarCartas(puntos, tipoSobre) {
   }
 }
 
-function sumarPuntos(puntos, cantidad = 5) {
-  return puntos + cantidad;
-}
 
-export { puntosIniciales, comprarCartas, sumarPuntos };
+export { puntosIniciales, comprarCartas};

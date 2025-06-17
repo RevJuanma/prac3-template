@@ -10,9 +10,9 @@ function BoosterCards({ pokemonIds, cardsToPick, onSelectionDone }) {
     }, [pokemonIds]); 
 
     const toggleSelect = (pokemon) => {
-        const alreadySelected = selected.some((p) => p.id === pokemon.id);
+        const alreadySelected = selected.some((carta) => carta.id === pokemon.id);
         if (alreadySelected) {
-            setSelected(selected.filter((p) => p.id !== pokemon.id));
+            setSelected(selected.filter((carta) => carta.id !== pokemon.id));
         } else if (selected.length < cardsToPick) {
             setSelected([...selected, pokemon]);
 
@@ -38,7 +38,7 @@ function BoosterCards({ pokemonIds, cardsToPick, onSelectionDone }) {
                     <PokeCard key={id} id={id} onSelect={toggleSelect} isSelected={selected.some((p) => p.id === id)} isSelectable={true}/>
                 ))}
             </div>
-            <button onClick={confirm} disabled={selected.length !== cardsToPick}>Confirmar ({selected.length}/{cardsToPick})</button>
+            <button onClick={confirm} disabled={selected.length !== cardsToPick}>Confirmar({selected.length}/{cardsToPick})</button>
         </div>
     );
 }

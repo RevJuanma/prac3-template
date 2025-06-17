@@ -37,7 +37,7 @@ function PokeCard({ id, onSelect, isSelectable = false, isSelected = false, show
                 </div>
             )}
             {showDeckActions && (
-                <div className="mazo-card-actions">
+                <div>
                     <button onClick={() => onDeleteFromMazo(pokemonData.id)}>Quitar del Mazo</button>
                 </div>
             )}
