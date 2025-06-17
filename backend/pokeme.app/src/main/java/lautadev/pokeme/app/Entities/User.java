@@ -32,7 +32,7 @@ public class User implements UserDetails {
     private String email;
     @Column(nullable = false, precision = 38, scale = 16)
     private BigDecimal balance;
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private Inventory inventory;
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Deck deck;

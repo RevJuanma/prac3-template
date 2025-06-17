@@ -1,0 +1,189 @@
+package lautadev.pokeme.app.Services.pokemonBoosterPack.Impl;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lautadev.pokeme.app.DTO.request.boosterPack.PokemonSelectionRequest;
+import lautadev.pokeme.app.DTO.response.boosterPack.ShowCardPokemonResponse;
+import lautadev.pokeme.app.DTO.response.boosterPack.StatsPokemonDTO;
+import lautadev.pokeme.app.Entities.*;
+import lautadev.pokeme.app.Entities.enums.Quality;
+import lautadev.pokeme.app.Exceptions.ApiException;
+import lautadev.pokeme.app.Repositories.CardPokemonRepository;
+import lautadev.pokeme.app.Services.pokemonBoosterPack.CardPokemonService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
+
+import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
+
+import static lautadev.pokeme.app.Utils.Constants.BASE_URL;
+
+@Service
+@RequiredArgsConstructor
+@Slf4j
+public class CardPokemonServiceImpl implements CardPokemonService {
+
+    private final CardPokemonRepository cardPokemonRepository;
+    private final PokemonCacheService pokemonCacheService;
+    private final BoosterPackCacheService boosterPackCacheService;
+
+
+    @Override
+    @Transactional
+    public void saveSelectedPokemon(PokemonSelectionRequest pokemonSelectionRequest) {
+        User user = getUserLoggedSecurityContext();
+
+        String sessionId = pokemonSelectionRequest.sessionId();
+        List<Long> selectedPokemonIds = pokemonSelectionRequest.selectedPokemonIds();
+
+        BoosterPackCacheEntry entry = boosterPackCacheService.get(sessionId)
+                .orElseThrow(() -> new ApiException("Session expired or invalid"));
+
+        validateMaxSelectable(entry,selectedPokemonIds);
+        validateIdPokemonInSelection(entry,selectedPokemonIds);
+
+        for (Long id : selectedPokemonIds) {
+            ShowCardPokemonResponse pokemon = entry.getPokemon().stream()
+                    .filter(p -> p.getIdPokemon().equals(id))
+                    .findFirst()
+                    .orElseThrow();
+
+            CardPokemon card = mapToCardPokemon(pokemon, user);
+            cardPokemonRepository.save(card);
+        }
+
+        boosterPackCacheService.invalidate(sessionId);
+    }
+
+    private CardPokemon mapToCardPokemon(ShowCardPokemonResponse showCard, User user) {
+        CardPokemon card = CardPokemon.builder()
+                .idPokemon(showCard.getIdPokemon())
+                .value(showCard.getValue())
+                .name(showCard.getName())
+                .urlImage(showCard.getUrlImage())
+                .isFavorite(false)
+                .isDeleted(false)
+                .build();
+
+        Set<Stat> stats = showCard.getStats().stream()
+                .map(statDto -> {
+                    Stat stat = new Stat();
+                    stat.setName(statDto.getName());
+                    stat.setBaseStat(statDto.getBaseStat());
+                    stat.setEffort(statDto.getEffort());
+                    stat.setUrl(statDto.getUrl());
+                    stat.setCardPokemon(card);
+                    return stat;
+                })
+                .collect(Collectors.toSet());
+
+        card.setStats(stats);
+
+        Inventory inventory = user.getInventory();
+        card.setInventory(inventory);
+
+        return card;
+    }
+
+    @Override
+    public List<ShowCardPokemonResponse> loadPokemonByQualityPack(Quality quality) {
+        List<Integer> validIds = pokemonCacheService.getValidPokemonIds();
+
+        int poolSize;
+        if (quality == Quality.BASIC) {
+            poolSize = 5;
+        } else if (quality == Quality.PREMIUM) {
+            poolSize = 6;
+        } else {
+            throw new ApiException("Undefined Quality");
+        }
+
+        List<Integer> pool = chooseRandom(validIds, poolSize);
+
+        return pool.stream()
+                .map(this::buildShowCardPokemonResponse)
+                .collect(Collectors.toList());
+    }
+
+    private List<Integer> chooseRandom(List<Integer> list, int count) {
+        Collections.shuffle(list);
+        return list.stream().limit(count).collect(Collectors.toList());
+    }
+
+    private ShowCardPokemonResponse buildShowCardPokemonResponse(Integer idPokemon) {
+        String url = BASE_URL + idPokemon;
+
+        try {
+            JsonNode root = new ObjectMapper().readTree(new RestTemplate().getForObject(url, String.class));
+
+            String name = root.get("name").asText();
+            String urlImage = root.get("sprites").get("front_default").asText();
+
+            Set<StatsPokemonDTO> stats = new HashSet<>();
+            for (JsonNode statNode : root.get("stats")) {
+                String statName = statNode.get("stat").get("name").asText();
+                int baseStat = statNode.get("base_stat").asInt();
+                int effort = statNode.get("effort").asInt();
+                String statUrl = statNode.get("stat").get("url").asText();
+                stats.add(new StatsPokemonDTO(statName, baseStat, effort, statUrl));
+            }
+
+            ShowCardPokemonResponse response = new ShowCardPokemonResponse(
+                    idPokemon.longValue(),
+                    generateRandomValue(),
+                    name,
+                    urlImage,
+                    stats
+            );
+            log.debug("Construido ShowCardPokemonResponse para id {} con nombre {}", idPokemon, name);
+            return response;
+        } catch (JsonProcessingException e) {
+            log.error("Error procesando JSON para el pokemon id {}: ", idPokemon, e);
+            throw new ApiException("Error processing data of Pokémon");
+        } catch (Exception e) {
+            log.error("Error inesperado para el pokemon id {}: ", idPokemon, e);
+            throw new ApiException("Error processing data of Pokémon");
+        }
+    }
+
+
+    private BigDecimal generateRandomValue() {
+        int randomValue = ThreadLocalRandom.current().nextInt(1, 1001);
+        return BigDecimal.valueOf(randomValue);
+    }
+
+    private User getUserLoggedSecurityContext() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return (User) authentication.getPrincipal();
+    }
+
+    private void validateMaxSelectable(BoosterPackCacheEntry entry, List<Long> selectedPokemonIds) {
+        int maxSelectable = entry.getQuality() == Quality.BASIC ? 1 : 2;
+        if (selectedPokemonIds.size() > maxSelectable) {
+            throw new ApiException("Selection exceeds allowed number for this booster quality");
+        }
+    }
+
+    private void validateIdPokemonInSelection(BoosterPackCacheEntry entry, List<Long> selectedPokemonIds) {
+        Set<Long> validIds = entry.getPokemon().stream()
+                .map(ShowCardPokemonResponse::getIdPokemon)
+                .collect(Collectors.toSet());
+
+        for (Long id : selectedPokemonIds) {
+            if (!validIds.contains(id)) {
+                throw new ApiException("Invalid Pokémon selection");
+            }
+        }
+    }
+}

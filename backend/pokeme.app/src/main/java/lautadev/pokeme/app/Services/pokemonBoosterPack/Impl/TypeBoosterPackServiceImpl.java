@@ -1,4 +1,4 @@
-package lautadev.pokeme.app.Services.boosterPack.Impl;
+package lautadev.pokeme.app.Services.pokemonBoosterPack.Impl;
 
 import lautadev.pokeme.app.DTO.request.boosterPack.CreateTypeBoosterPackRequest;
 import lautadev.pokeme.app.DTO.response.boosterPack.TypeBoosterPackResponse;
@@ -6,7 +6,7 @@ import lautadev.pokeme.app.Entities.TypeBoosterPack;
 import lautadev.pokeme.app.Entities.enums.Quality;
 import lautadev.pokeme.app.Exceptions.ApiException;
 import lautadev.pokeme.app.Repositories.TypeBoosterPackRepository;
-import lautadev.pokeme.app.Services.boosterPack.TypeBoosterPackService;
+import lautadev.pokeme.app.Services.pokemonBoosterPack.TypeBoosterPackService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

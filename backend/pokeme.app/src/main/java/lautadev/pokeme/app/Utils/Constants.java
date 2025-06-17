@@ -16,4 +16,10 @@ public class Constants {
             "api/v1/type-booster-pack",
             "api/v1/type-booster-pack/create"
     );
+
+    public static final String BASE_URL = "https://pokeapi.co/api/v2/pokemon/";
+
+    public static final String GET_POKEMON_COUNT = BASE_URL + "?limit=1";
+
+    public static final String ALL_POKEMON_URL = "https://pokeapi.co/api/v2/pokemon?limit=100000";
 }

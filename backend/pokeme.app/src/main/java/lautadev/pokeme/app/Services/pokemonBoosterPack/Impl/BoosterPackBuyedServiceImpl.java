@@ -1,14 +1,18 @@
-package lautadev.pokeme.app.Services.boosterPack.Impl;
+package lautadev.pokeme.app.Services.pokemonBoosterPack.Impl;
 
 import lautadev.pokeme.app.DTO.request.boosterPack.BuyBoosterPackRequest;
+import lautadev.pokeme.app.DTO.response.boosterPack.BoosterPackOpenResponse;
 import lautadev.pokeme.app.DTO.response.boosterPack.MyBoosterPacksBuyedResponse;
+import lautadev.pokeme.app.DTO.response.boosterPack.ShowCardPokemonResponse;
 import lautadev.pokeme.app.Entities.BoosterPackBuyed;
+import lautadev.pokeme.app.Entities.BoosterPackCacheEntry;
 import lautadev.pokeme.app.Entities.TypeBoosterPack;
 import lautadev.pokeme.app.Entities.User;
 import lautadev.pokeme.app.Exceptions.ApiException;
 import lautadev.pokeme.app.Repositories.BoosterPackBuyedRepository;
 import lautadev.pokeme.app.Repositories.TypeBoosterPackRepository;
-import lautadev.pokeme.app.Services.boosterPack.BoosterPackBuyedService;
+import lautadev.pokeme.app.Services.pokemonBoosterPack.BoosterPackBuyedService;
+import lautadev.pokeme.app.Services.pokemonBoosterPack.CardPokemonService;
 import lautadev.pokeme.app.Services.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -24,7 +28,9 @@ import java.util.List;
 public class BoosterPackBuyedServiceImpl implements BoosterPackBuyedService {
 
     private final BoosterPackBuyedRepository boosterPackBuyedRepository;
+    private final BoosterPackCacheService boosterPackCacheService;
     private final TypeBoosterPackRepository typeBoosterPackRepository;
+    private final CardPokemonService cardPokemonService;
     private final UserService userService;
 
     @Override
@@ -37,8 +43,24 @@ public class BoosterPackBuyedServiceImpl implements BoosterPackBuyedService {
     @Override
     public List<MyBoosterPacksBuyedResponse> getMyPacks() {
         User user = getUserLoggedSecurityContext();
-        List<BoosterPackBuyed> boosterPackBuyeds = boosterPackBuyedRepository.findByUserIdAndCountNotZero(user.getId());
-        return buildMyBoosterPacksBuyedResponse(boosterPackBuyeds);
+        List<BoosterPackBuyed> boosterPackPurchased = boosterPackBuyedRepository.findByUserIdAndCountNotZero(user.getId());
+        return buildMyBoosterPacksBoughtResponse(boosterPackPurchased);
+    }
+
+    @Override
+    @Transactional
+    public BoosterPackOpenResponse openBoosterPack(Long id) {
+        User user = getUserLoggedSecurityContext();
+        BoosterPackBuyed boosterPackBuyed = boosterPackBuyedRepository.findByIdAndUserIdAndCountNotZero(id,user.getId())
+                .orElseThrow(()-> new ApiException("Booster pack not found"));
+
+        List<ShowCardPokemonResponse> showCardPokemonResponses = cardPokemonService.loadPokemonByQualityPack(boosterPackBuyed.getTypeBoosterPack().getQuality());
+
+        String sessionId = addPokemonListInCache(user,boosterPackBuyed,showCardPokemonResponses);
+
+        updateCountBoosterPackUsed(boosterPackBuyed);
+
+        return new BoosterPackOpenResponse(sessionId, showCardPokemonResponses);
     }
 
     private User getUserLoggedSecurityContext() {
@@ -46,8 +68,8 @@ public class BoosterPackBuyedServiceImpl implements BoosterPackBuyedService {
         return (User) authentication.getPrincipal();
     }
 
-    private List<MyBoosterPacksBuyedResponse> buildMyBoosterPacksBuyedResponse(List<BoosterPackBuyed> boosterPackBuyeds) {
-        return boosterPackBuyeds.stream()
+    private List<MyBoosterPacksBuyedResponse> buildMyBoosterPacksBoughtResponse(List<BoosterPackBuyed> boosterPackPurchased) {
+        return boosterPackPurchased.stream()
                 .map(bp -> new MyBoosterPacksBuyedResponse(
                         bp.getId(),
                         bp.getTypeBoosterPack().getQuality(),
@@ -74,5 +96,17 @@ public class BoosterPackBuyedServiceImpl implements BoosterPackBuyedService {
                                             .build();
 
         boosterPackBuyedRepository.save(boosterPackBuyed);
+    }
+
+    private void updateCountBoosterPackUsed(BoosterPackBuyed boosterPackBuyed) {
+        int newCount = boosterPackBuyed.getCount() - 1;
+        boosterPackBuyed.setCount(newCount);
+        boosterPackBuyedRepository.save(boosterPackBuyed);
+    }
+
+    private String addPokemonListInCache(User user, BoosterPackBuyed boosterPackBuyed, List<ShowCardPokemonResponse> showCardPokemonResponses) {
+        String sessionId = user.getId() + ":" + boosterPackBuyed.getId();
+        boosterPackCacheService.put(sessionId, new BoosterPackCacheEntry(showCardPokemonResponses, boosterPackBuyed.getTypeBoosterPack().getQuality()));
+        return sessionId;
     }
 }
