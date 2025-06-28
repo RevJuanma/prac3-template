@@ -38,6 +38,11 @@ public class ShowCardPokemonResponse {
         this.stats = stats;
     }
 
-    public ShowCardPokemonResponse(long l, BigDecimal bigDecimal, String name, String urlImage, Set<StatsPokemonDTO> stats) {
+    public ShowCardPokemonResponse(long id, BigDecimal value, String name, String urlImage, Set<StatsPokemonDTO> stats) {
+        this.idPokemon = id;
+        this.value = value;
+        this.name = name;
+        this.urlImage = urlImage;
+        this.stats = stats;
     }
 }
