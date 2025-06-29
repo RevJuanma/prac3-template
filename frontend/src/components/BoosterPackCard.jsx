@@ -1,13 +1,42 @@
 import Button from './Button';
 
-const BoosterPackCard = ({ quality, amountPokemon, count, onOpen  }) => {
+const BoosterPackCard = ({
+  quality,
+  amountPokemon,
+  count,
+  price,
+  onOpen,
+  onBuy,
+  inputValue,
+  onChange,
+  loading
+}) => {
   return (
     <div style={styles.card}>
       <h3 style={styles.quality}>{quality}</h3>
       <p><strong>Pokémon por pack:</strong> {amountPokemon}</p>
-      <p><strong>Cantidad:</strong> {count}</p>
+      {price !== undefined && <p><strong>Precio:</strong> {price}</p>}
+      {count !== undefined && <p><strong>Cantidad:</strong> {count}</p>}
 
-      <Button onClick={onOpen}>Abrir pack</Button>
+      {/* Compra de booster pack */}
+      {onBuy && (
+        <>
+          <input
+            type="number"
+            min="1"
+            placeholder="Cantidad"
+            value={inputValue}
+            onChange={onChange}
+            style={{ width: '100px', margin: '1rem', marginBottom: '1rem', padding: '0.5rem' }}
+          />
+          <Button onClick={onBuy} disabled={loading}>
+            {loading ? 'Procesando...' : 'Comprar'}
+          </Button>
+        </>
+      )}
+
+      {/* Apertura de booster pack */}
+      {onOpen && <Button onClick={onOpen}>Abrir pack</Button>}
     </div>
   );
 };
