@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 import TextField from '../components/TextField';
 import ErrorMessage from '../components/ErrorMessage';
-import CenteredContainer from '../components/CenteredContainer';
+import CenteredContainerForm from '../components/CenteredContainerForms';
 import AuthFormWrapper from '../components/AuthFormWrapper';
 import AuthToggleLink from '../components/AuthToggleLink';
 
@@ -36,7 +36,7 @@ const Login = () => {
   };
 
   return (
-    <CenteredContainer>
+    <CenteredContainerForm>
       <AuthFormWrapper
         title="Iniciar sesión"
         onSubmit={handleSubmit}
@@ -64,7 +64,7 @@ const Login = () => {
         {error && <ErrorMessage message={error} />}
         <AuthToggleLink />
       </AuthFormWrapper>
-    </CenteredContainer>
+    </CenteredContainerForm>
   );
 };
 

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 import TextField from '../components/TextField';
 import ErrorMessage from '../components/ErrorMessage';
-import CenteredContainer from '../components/CenteredContainer';
+import CenteredContainerForm from '../components/CenteredContainerForms';
 import AuthFormWrapper from '../components/AuthFormWrapper';
 import AuthToggleLink from '../components/AuthToggleLink';
 
@@ -37,7 +37,7 @@ const Register = () => {
   };
 
   return (
-    <CenteredContainer>
+    <CenteredContainerForm>
       <AuthFormWrapper
         title="Registro"
         onSubmit={handleSubmit}
@@ -73,7 +73,7 @@ const Register = () => {
         {error && <ErrorMessage message={error} />}
         <AuthToggleLink />
       </AuthFormWrapper>
-    </CenteredContainer>
+    </CenteredContainerForm>
   );
 };
 
