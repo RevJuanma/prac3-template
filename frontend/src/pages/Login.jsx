@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../store/auth/authThunks';
+import { useNavigate } from 'react-router-dom';
 
 import TextField from '../components/TextField';
 import ErrorMessage from '../components/ErrorMessage';
@@ -11,6 +12,7 @@ import AuthToggleLink from '../components/AuthToggleLink';
 const Login = () => {
   const dispatch = useDispatch();
   const { error, loading } = useSelector(state => state.auth);
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     identifier: '',
@@ -27,8 +29,7 @@ const Login = () => {
 
     try {
       await dispatch(loginUser(formData)).unwrap();
-      console.log('Login exitoso');
-      // Redireccionar al home o dashboard acá
+      navigate('/home');
     } catch (err) {
       console.error('Error en el login:', err);
     }

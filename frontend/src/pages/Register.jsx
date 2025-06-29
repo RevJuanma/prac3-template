@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { registerUser } from '../store/auth/authThunks';
+import { useNavigate } from 'react-router-dom';
 
 import TextField from '../components/TextField';
 import ErrorMessage from '../components/ErrorMessage';
@@ -11,6 +12,7 @@ import AuthToggleLink from '../components/AuthToggleLink';
 const Register = () => {
   const dispatch = useDispatch(); // hook para actualizar el estado global (Redux) (ej:acción que hace el registro)
   const { error, loading } = useSelector(state => state.auth); // hook q permite seleccionar una parte del estado global  de redux
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     name: '',
@@ -28,8 +30,7 @@ const Register = () => {
 
     try {
       await dispatch(registerUser(formData)).unwrap(); // .unwrap() permite que la promesa lance una excepción si falla
-      console.log('Registro exitoso');
-      // redireccion aca despues al home
+      navigate('/home');
     } catch (err) {
       console.error('Error en el registro:', err);
     }
