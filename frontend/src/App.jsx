@@ -9,6 +9,7 @@ import Favorite from './pages/Favorite';
 import BoosterPack from './pages/BoosterPack';
 import MainLayout from './layout/MainLayout';
 import ProtectedRoute from './routes/ProtectedRoute';
+import SelectPokemon from './pages/SelectPokemon';
 
 const App = () => {
   return (
@@ -24,6 +25,7 @@ const App = () => {
             <Route path="/team" element={<Team />} />
             <Route path="/favorite" element={<Favorite />} />
             <Route path="/booster-pack" element={<BoosterPack />} />
+            <Route path="/select-pokemon" element={<SelectPokemon />} />
           </Route>
         </Route>
 

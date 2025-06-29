@@ -9,3 +9,16 @@ export const getBoosterPacks = async (token) => {
   });
   return response.data;
 };
+
+export const openBoosterPack = async (boosterId, token) => {
+  const response = await axios.post(
+    `${BOOSTER_PACK}/${boosterId}/open`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return response.data;
+};
