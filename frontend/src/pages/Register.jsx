@@ -6,6 +6,7 @@ import TextField from '../components/TextField';
 import ErrorMessage from '../components/ErrorMessage';
 import CenteredContainer from '../components/CenteredContainer';
 import AuthFormWrapper from '../components/AuthFormWrapper';
+import AuthToggleLink from '../components/AuthToggleLink';
 
 const Register = () => {
   const dispatch = useDispatch(); // hook para actualizar el estado global (Redux) (ej:acción que hace el registro)
@@ -69,6 +70,7 @@ const Register = () => {
         />
 
         {error && <ErrorMessage message={error} />}
+        <AuthToggleLink />
       </AuthFormWrapper>
     </CenteredContainer>
   );
