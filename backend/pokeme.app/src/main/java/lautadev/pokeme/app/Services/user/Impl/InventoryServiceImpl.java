@@ -65,7 +65,7 @@ public class InventoryServiceImpl implements InventoryService {
         dto.setIdPokemon(card.getIdPokemon());
         dto.setValue(card.getValue());
         dto.setName(card.getName());
-        dto.setFavorite(card.isPresentFavorite());
+        dto.setPresentFavorite(card.isPresentFavorite());
         dto.setUrlImage(card.getUrlImage());
 
         Set<StatsPokemonDTO> statsDtos = card.getStats().stream()

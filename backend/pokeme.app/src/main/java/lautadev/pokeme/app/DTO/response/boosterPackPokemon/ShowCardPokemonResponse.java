@@ -25,7 +25,7 @@ public class ShowCardPokemonResponse {
 
     private String urlImage;
 
-    private boolean isFavorite;
+    private boolean isPresentFavorite;
 
     private Set<StatsPokemonDTO> stats = new HashSet<>();
 
@@ -34,7 +34,7 @@ public class ShowCardPokemonResponse {
         this.value = value;
         this.name = name;
         this.urlImage = urlImage;
-        this.isFavorite =  isFavorite;
+        this.isPresentFavorite =  isFavorite;
         this.stats = stats;
     }
 
