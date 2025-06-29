@@ -1,22 +1,18 @@
-const CenteredContainer = ({ children }) => {
+const CenteredContainer = ({ children, maxWidth = '1200px' }) => {
   return (
     <div
       style={{
         display: 'flex',
         justifyContent: 'center',
-        alignItems: 'center',
+        alignItems: 'flex-start',
         minHeight: '100vh',
-        padding: '1rem',
+        padding: '2rem',
       }}
     >
       <div
         style={{
-          maxWidth: '400px',
+          maxWidth,
           width: '100%',
-          border: '1px solid #ccc',
-          borderRadius: '8px',
-          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-          padding: '2rem',
         }}
       >
         {children}
