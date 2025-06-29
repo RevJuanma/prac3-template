@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { registerUser, loginUser } from './authThunks';
+import { registerUser, loginUser, logoutUser } from './authThunks';
 import { jwtDecode } from 'jwt-decode';
 
 const token = localStorage.getItem('accessToken');
@@ -95,6 +95,19 @@ const authSlice = createSlice({
         localStorage.setItem('refreshToken', refreshToken);
       })
       .addCase(loginUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(logoutUser.fulfilled, (state) => { // <------- Case Logout --------->
+        state.token = null;
+        state.user = null;
+        state.loading = false;
+        state.error = null;
+
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+      })
+      .addCase(logoutUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

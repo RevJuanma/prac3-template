@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { REGISTER_URL, LOGIN_URL } from '../../utils/constants';
+import { REGISTER_URL, LOGIN_URL, LOGOUT_URL } from '../../utils/constants';
 
 export const registerUser = createAsyncThunk(
   'auth/registerUser',
@@ -23,6 +23,32 @@ export const loginUser = createAsyncThunk(
       return response.data;
     } catch (error) {
       const backendMessage = error.response?.data?.error || 'Error al iniciar sesión';
+      return rejectWithValue(backendMessage);
+    }
+  }
+);
+
+export const logoutUser = createAsyncThunk(
+  'auth/logoutUser',
+  async (_, { getState, rejectWithValue }) => {
+    const token = getState().auth.token;
+
+    if (!token) return rejectWithValue('No hay token para cerrar sesión');
+
+    try {
+      await axios.post(
+        LOGOUT_URL,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      return true;
+    } catch (error) {
+      const backendMessage = error.response?.data?.error || 'Error al cerrar sesión';
       return rejectWithValue(backendMessage);
     }
   }
