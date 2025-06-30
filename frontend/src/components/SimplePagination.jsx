@@ -5,4 +5,4 @@ const SimplePagination = ({ page, totalPages, onPrev, onNext }) => (
     <button onClick={onNext} disabled={page + 1 >= totalPages}>Siguiente »</button>
   </div>
 );
-export default SimplePagination;
+export default SimplePagination; 
