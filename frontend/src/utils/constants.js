@@ -19,3 +19,7 @@ export const INVENTORY_URL = `${API_BASE_URL}/inventory`;
 
 // User
 export const USER_ME = `${API_BASE_URL}/user/me`;
+
+// Team
+export const ADD_TO_TEAM = `${API_BASE_URL}/team-pokemon/add/pokemon`;
+export const GET_TEAM = `${API_BASE_URL}/team-pokemon`;
