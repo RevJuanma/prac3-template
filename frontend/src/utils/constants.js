@@ -12,3 +12,6 @@ export const TYPE_BOOSTER_PACK = `${API_BASE_URL}/type-booster-pack`;
 
 // Card Pokemon
 export const SELECT_POKEMON = `${API_BASE_URL}/card-pokemon/select`;
+
+// Inventory
+export const INVENTORY_URL = `${API_BASE_URL}/inventory`;
