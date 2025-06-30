@@ -1,15 +1,19 @@
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { getUserMe } from '../services/userService';
 
 import CenteredContainer from '../components/CenteredContainer';
 import PokemonCard from '../components/PokemonCard';
 import SimplePagination from '../components/SimplePagination';
 import PopupMessage from '../components/PopupMessage';
+import Button from '../components/Button';
 
 import { getInventory } from '../services/inventoryService';
+import { sellPokemonCard } from '../services/cardService';
 
 const Inventory = () => {
   const token = useSelector(state => state.auth.token);
+  const [user, setUser] = useState(null);
 
   const [inventory, setInventory] = useState({
     pokemon: [],
@@ -26,6 +30,7 @@ const Inventory = () => {
   // ceil redonea "para arriba" ej: slot use = 13, page_zise 10 -> 13 / 10 = 1.3 -> 2
   const totalPages = Math.ceil(inventory.slotUsed / PAGE_SIZE);
 
+  // UseEffect para la paginación
   useEffect(() => {
     if (!token) return;
 
@@ -53,11 +58,46 @@ const Inventory = () => {
     if (page + 1 < totalPages) setPage(prev => prev + 1);
   };
 
+  // useEffect para obtener el balance del user
+  useEffect(() => {
+    if (!token) return;
+
+    const fetchUser = async () => {
+      try {
+        const userData = await getUserMe(token);
+        setUser(userData);
+      } catch (err) {
+        console.error('Error al cargar datos de usuario', err);
+      }
+    };
+
+    fetchUser();
+  }, [token]);
+
+  const handleSell = async (pokemonId) => {
+  try {
+    await sellPokemonCard(pokemonId, token);
+    setPopup({ message: 'Pokémon vendido exitosamente', type: 'success' });
+
+    // Recargar inventario y balance
+    const [updatedInventory, updatedUser] = await Promise.all([
+      getInventory(page, PAGE_SIZE, token),
+      getUserMe(token)
+    ]);
+
+    setInventory(updatedInventory);
+    setUser(updatedUser);
+  } catch (err) {
+    console.error('Error al vender Pokémon', err);
+    setPopup({ message: 'Error al vender Pokémon', type: 'error' });
+  }
+};
+
   return (
     <CenteredContainer maxWidth="1200px">
       <h2 style={{ textAlign: 'center' }}>Inventario</h2>
       <p style={{ textAlign: 'center' }}>
-        Slots usados: {inventory.slotUsed}/50 — Precio estimado: ${inventory.estimatedPrice}
+        Slots usados: {inventory.slotUsed}/50 — Precio estimado: ${inventory.estimatedPrice} — Balance: ${user ? user.balance : '...'}
       </p>
 
       <SimplePagination
@@ -75,8 +115,15 @@ const Inventory = () => {
             <PokemonCard
               key={poke.id}
               pokemon={poke}
-              onSelect={() => {}}
+              onSelect={() => { }}
               selected={false}
+              actions={ // Actions es un prop opcional para el componente, en mi caso recibe botones
+                <>
+                  <Button onClick={() => handleSell(poke.id)}>Vender Pokémon</Button>
+                  <Button onClick={() => console.log('Añadir al mazo', poke.id)}>Añadir al Mazo</Button>
+                  <Button onClick={() => console.log('Favorito', poke.id)}>Añadir a Favorito</Button>
+                </>
+              }
             />
           ))}
         </div>
