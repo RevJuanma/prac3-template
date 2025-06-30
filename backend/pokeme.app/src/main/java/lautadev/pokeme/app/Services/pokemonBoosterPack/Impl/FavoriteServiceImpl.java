@@ -52,6 +52,8 @@ public class FavoriteServiceImpl implements FavoriteService {
         Favorite favorite = favoriteRepository.findById(user.getFavorite().getId())
                 .orElseThrow(CardPokemonNotFoundException::new);
 
+        long activeCount = favoriteRepository.countActiveCardsInFavorite(favorite.getId());
+
         Set<CardPokemon> pokemon = favorite.getPokemons().stream()
                 .filter(p -> !p.isDeleted())
                 .collect(Collectors.toSet());
@@ -62,7 +64,7 @@ public class FavoriteServiceImpl implements FavoriteService {
 
         FavoriteDTO dto = new FavoriteDTO();
         dto.setId(favorite.getId());
-        dto.setSlotUsed(favorite.getSlotUsed());
+        dto.setSlotUsed((int) activeCount);
         dto.setPokemon(pokemonDtoList);
 
         return dto;
@@ -78,14 +80,14 @@ public class FavoriteServiceImpl implements FavoriteService {
             favorite.getPokemons().removeIf(p -> p.getId().equals(cardPokemon.getId()));
             cardPokemon.setFavorite(null);
             cardPokemon.setPresentFavorite(false);
-            favorite.setSlotUsed(favorite.getSlotUsed() - 1);
         } else {
-            validateSlotInFavoriteList(favorite.getId());
+            if (favoriteRepository.countActiveCardsInFavorite(favorite.getId()) >=  10) {
+                throw new ApiException("The favorite list has the maximum of 10 cards");
+            }
 
             cardPokemon.setFavorite(favorite);
             favorite.getPokemons().add(cardPokemon);
             cardPokemon.setPresentFavorite(true);
-            favorite.setSlotUsed(favorite.getSlotUsed() + 1);
         }
     }
 
@@ -111,14 +113,6 @@ public class FavoriteServiceImpl implements FavoriteService {
 
         dto.setStats(statsDtos);
         return dto;
-    }
-
-    private void validateSlotInFavoriteList(Long favoriteId) {
-        long currentCount = favoriteRepository.countActiveCardsInFavorite(favoriteId);
-
-        if (currentCount >= 10) {
-            throw new ApiException("The favorite list has the maximum of 10 cards");
-        }
     }
 
     private User getUserLoggedSecurityContext() {

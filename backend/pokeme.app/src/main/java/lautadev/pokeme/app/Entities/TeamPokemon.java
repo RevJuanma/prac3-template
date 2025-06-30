@@ -22,5 +22,4 @@ public class TeamPokemon {
     private User user;
     @OneToMany(mappedBy = "teamPokemon", cascade = CascadeType.ALL)
     private Set<CardPokemon> pokemons = new HashSet<>();
-    private int slotUsed;
 }

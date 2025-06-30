@@ -110,10 +110,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         inventory.setSlotUsed(0);
 
         TeamPokemon teamPokemon = new TeamPokemon();
-        teamPokemon.setSlotUsed(0);
 
-        Favorite favorite = new Favorite();
-        favorite.setSlotUsed(0);
+        Favorite favorite = new Favorite();;
 
         User user = User.builder()
                 .name(userRegisterRequest.name())

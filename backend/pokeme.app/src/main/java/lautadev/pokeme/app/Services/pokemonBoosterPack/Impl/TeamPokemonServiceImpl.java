@@ -53,6 +53,8 @@ public class TeamPokemonServiceImpl implements TeamPokemonService {
         TeamPokemon team = teamPokemonRepository.findById(user.getTeamPokemon().getId())
                 .orElseThrow(ResourceNotFoundException::new);
 
+        long activeCount = teamPokemonRepository.countActiveCardsInTeam(team.getId());
+
         Set<CardPokemon> pokemon = team.getPokemons().stream()
                 .filter(p -> !p.isDeleted())
                 .collect(Collectors.toSet());
@@ -63,7 +65,7 @@ public class TeamPokemonServiceImpl implements TeamPokemonService {
 
         TeamPokemonDTO dto = new TeamPokemonDTO();
         dto.setId(team.getId());
-        dto.setSlotUsed(team.getSlotUsed());
+        dto.setSlotUsed((int) activeCount);
         dto.setPokemon(pokemonDtoList);
 
         return dto;
@@ -75,23 +77,14 @@ public class TeamPokemonServiceImpl implements TeamPokemonService {
         if (isPokemonPresent) {
             teamPokemon.getPokemons().removeIf(p -> p.getId().equals(cardPokemon.getId()));
             cardPokemon.setTeamPokemon(null);
-            teamPokemon.setSlotUsed(teamPokemon.getSlotUsed() - 1);
         } else {
-            validateSlotInTheTeam(teamPokemon.getId());
-
+            if (teamPokemonRepository.countActiveCardsInTeam(teamPokemon.getId()) >= 6) {
+                throw new ApiException("The team already has the maximum of 6 cards");
+            }
             cardPokemon.setTeamPokemon(teamPokemon);
             teamPokemon.getPokemons().add(cardPokemon);
-            teamPokemon.setSlotUsed(teamPokemon.getSlotUsed() + 1);
         }
 
-    }
-
-    private void validateSlotInTheTeam(Long teamId) {
-        long currentCount = teamPokemonRepository.countActiveCardsInTeam(teamId);
-
-        if (currentCount >= 6) {
-            throw new ApiException("The team already has the maximum of 6 cards");
-        }
     }
 
     private User getUserLoggedSecurityContext() {

@@ -22,5 +22,4 @@ public class Favorite {
     private User user;
     @OneToMany(mappedBy = "favorite", cascade = CascadeType.ALL)
     private Set<CardPokemon> pokemons = new HashSet<>();
-    private int slotUsed;
 }
