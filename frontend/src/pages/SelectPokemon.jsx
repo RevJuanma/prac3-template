@@ -40,7 +40,7 @@ const SelectPokemon = () => {
 
     try {
       await selectPokemonCards({ sessionId, selectedPokemonIds: selectedIds }, token);
-      navigate('/team'); // Redireccionamos al equipo, o a donde corresponda
+      navigate('/inventory');
     } catch (err) {
       const message = err.response?.data?.message || 'Error al seleccionar el Pokémon';
       setError(message);
