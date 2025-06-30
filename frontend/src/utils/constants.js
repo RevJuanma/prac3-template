@@ -13,6 +13,7 @@ export const TYPE_BOOSTER_PACK = `${API_BASE_URL}/type-booster-pack`;
 // Card Pokemon
 export const SELECT_POKEMON = `${API_BASE_URL}/card-pokemon/select`;
 export const SELL_POKEMON = `${API_BASE_URL}/card-pokemon/sell`;
+export const RENAME_CARD_POKEMON = `${API_BASE_URL}/card-pokemon/rename`;
 
 // Inventory
 export const INVENTORY_URL = `${API_BASE_URL}/inventory`;
@@ -23,3 +24,7 @@ export const USER_ME = `${API_BASE_URL}/user/me`;
 // Team
 export const ADD_TO_TEAM = `${API_BASE_URL}/team-pokemon/add/pokemon`;
 export const GET_TEAM = `${API_BASE_URL}/team-pokemon`;
+
+// Favorite
+export const ADD_TO_FAVORITE = `${API_BASE_URL}/favorite/add/pokemon`;
+export const GET_FAVORITE = `${API_BASE_URL}/favorite`;

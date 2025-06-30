@@ -10,6 +10,8 @@ import Button from '../components/Button';
 
 import { getInventory } from '../services/inventoryService';
 import { sellPokemonCard } from '../services/cardService';
+import { addToTeam } from '../services/teamPokemonService';
+import { addToFavorite } from '../services/favoriteService';
 
 const Inventory = () => {
   const token = useSelector(state => state.auth.token);
@@ -75,23 +77,42 @@ const Inventory = () => {
   }, [token]);
 
   const handleSell = async (pokemonId) => {
-  try {
-    await sellPokemonCard(pokemonId, token);
-    setPopup({ message: 'Pokémon vendido exitosamente', type: 'success' });
+    try {
+      await sellPokemonCard(pokemonId, token);
+      setPopup({ message: 'Pokémon vendido exitosamente', type: 'success' });
 
-    // Recargar inventario y balance
-    const [updatedInventory, updatedUser] = await Promise.all([
-      getInventory(page, PAGE_SIZE, token),
-      getUserMe(token)
-    ]);
+      const [updatedInventory, updatedUser] = await Promise.all([
+        getInventory(page, PAGE_SIZE, token),
+        getUserMe(token)
+      ]);
 
-    setInventory(updatedInventory);
-    setUser(updatedUser);
-  } catch (err) {
-    console.error('Error al vender Pokémon', err);
-    setPopup({ message: 'Error al vender Pokémon', type: 'error' });
-  }
-};
+      setInventory(updatedInventory);
+      setUser(updatedUser);
+    } catch (err) {
+      console.error('Error al vender Pokémon', err);
+      setPopup({ message: 'Error al vender Pokémon', type: 'error' });
+    }
+  };
+
+  const handleAddToTeam = async (pokemonId) => {
+    try {
+      const response = await addToTeam(pokemonId, token);
+      setPopup({ message: response.message || 'Pokémon añadido al equipo', type: 'success' });
+    } catch (err) {
+      console.error('Error al añadir al equipo', err);
+      setPopup({ message: 'Error al añadir Pokémon al equipo', type: 'error' });
+    }
+  };
+
+  const handleAddToFavorite = async (pokemonId) => {
+    try {
+      const response = await addToFavorite(pokemonId, token);
+      setPopup({ message: response.message || 'Pokémon añadido a la lista de favoritos', type: 'success' });
+    } catch (err) {
+      console.error('Error al añadir a la lista de favoritos', err);
+      setPopup({ message: 'Error al añadir Pokémon a la lista de favoritos', type: 'error' });
+    }
+  };
 
   return (
     <CenteredContainer maxWidth="1200px">
@@ -120,8 +141,8 @@ const Inventory = () => {
               actions={ // Actions es un prop opcional para el componente, en mi caso recibe botones
                 <>
                   <Button onClick={() => handleSell(poke.id)}>Vender Pokémon</Button>
-                  <Button onClick={() => console.log('Añadir al mazo', poke.id)}>Añadir al Mazo</Button>
-                  <Button onClick={() => console.log('Favorito', poke.id)}>Añadir a Favorito</Button>
+                  <Button onClick={() => handleAddToTeam(poke.id)}>Añadir al Equipo</Button>
+                  <Button onClick={() => handleAddToFavorite(poke.id)}>Añadir a Favorito</Button>
                 </>
               }
             />
@@ -133,6 +154,12 @@ const Inventory = () => {
         message={popup.message}
         type={popup.type}
         onClose={() => setPopup({ message: '', type: 'success' })}
+      />
+      <SimplePagination
+        page={page}
+        totalPages={totalPages}
+        onPrev={handlePrev}
+        onNext={handleNext}
       />
     </CenteredContainer>
   );
