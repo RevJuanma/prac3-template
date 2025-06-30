@@ -6,8 +6,7 @@ import PokemonCard from '../components/PokemonCard';
 import PopupMessage from '../components/PopupMessage';
 import Button from '../components/Button';
 
-import { getTeam } from '../services/teamPokemonService';
-import { addToTeam } from '../services/teamPokemonService'
+import { getTeam, addToTeam  } from '../services/teamPokemonService';
 
 const Team = () => {
   const token = useSelector((state) => state.auth.token);
@@ -38,8 +37,6 @@ const Team = () => {
     try {
       const response = await addToTeam(pokemonId, token);
       setPopup({ message: response.message || 'Operación realizada con éxito', type: 'success' });
-
-      // Recargar el team luego de hacer toggle
       const updatedTeam = await getTeam(token);
       setTeam(updatedTeam);
     } catch (err) {
