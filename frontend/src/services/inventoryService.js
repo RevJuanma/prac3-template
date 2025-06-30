@@ -8,3 +8,5 @@ export const getInventory = async (page = 0, size = 10, token) => {
   );
   return response.data;
 };
+
+// http://localhost:8082/api/v1/inventory?page=0&size=10
