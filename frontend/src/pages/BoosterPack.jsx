@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { getBoosterPackTypes, buyBoosterPacks } from '../services/boosterPackService';
+import { getUserMe } from '../services/userService';
 
 import CenteredContainer from '../components/CenteredContainer';
 import BoosterPackCard from '../components/BoosterPackCard';
@@ -12,6 +13,23 @@ const BoosterPack = () => {
   const [loadingId, setLoadingId] = useState(null); // manejo de loading individual (por id del Booster Pack)
   const token = useSelector((state) => state.auth.token);
   const [popupMessage, setPopupMessage] = useState('');
+
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    if (!token) return;
+
+    const fetchUser = async () => {
+      try {
+        const userData = await getUserMe(token);
+        setUser(userData);
+      } catch (err) {
+        console.error('Error al cargar datos de usuario', err);
+      }
+    };
+
+    fetchUser();
+  }, [token]);
 
   useEffect(() => {
     getBoosterPackTypes()
@@ -49,6 +67,9 @@ const BoosterPack = () => {
   return (
     <CenteredContainer maxWidth="800px">
       <h2 style={{ textAlign: 'center' }}>Comprar Booster Packs</h2>
+      <p style={{ textAlign: 'center' }}>
+        Balance: ${user ? user.balance : '...'}
+      </p>
 
       <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center' }}>
         {types.map(pack => (

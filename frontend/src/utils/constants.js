@@ -15,3 +15,6 @@ export const SELECT_POKEMON = `${API_BASE_URL}/card-pokemon/select`;
 
 // Inventory
 export const INVENTORY_URL = `${API_BASE_URL}/inventory`;
+
+// User
+export const USER_ME = `${API_BASE_URL}/user/me`;
