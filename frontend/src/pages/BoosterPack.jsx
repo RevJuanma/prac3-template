@@ -12,8 +12,7 @@ const BoosterPack = () => {
   const [counts, setCounts] = useState({});
   const [loadingId, setLoadingId] = useState(null); // manejo de loading individual (por id del Booster Pack)
   const token = useSelector((state) => state.auth.token);
-  const [popupMessage, setPopupMessage] = useState('');
-
+  const [popupMessage, setPopupMessage] = useState({ message: '', type: 'success' });
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -55,6 +54,8 @@ const BoosterPack = () => {
       await buyBoosterPacks(id, count, token);
       setPopupMessage({ message: 'Compra realizada con éxito', type: 'success' });
       setCounts(prev => ({ ...prev, [id]: '' }));
+      const updatedUser = await getUserMe(token);
+      setUser(updatedUser);
     } catch (err) {
       console.error(err);
       const msg = err.response?.data?.message || 'Error al comprar';
